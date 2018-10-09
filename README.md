@@ -1,7 +1,6 @@
 # mosquito-monitoring
 Identify mosquito species and collect data to anticipate epidemics propagation
 
-
 # Introduction
 ## Project purpose
 The purpose of this project is to be able to monitor and later anticipate mosquito related epidemics.
@@ -13,3 +12,24 @@ Those information will be written in a database, and a Machine Learning algorith
 
 ## Project graph
 ![Hyperparams.txt](docs/graph_project.png) 
+=======
+You need python 3 and the dependencies installed 
+
+# Installation
+
+```
+pip3 -r requirements.txt
+```
+
+Info: freeze local packages into requirements.txt with following command
+
+```
+pipreqs ./ --force      
+```
+
+	## Start server
+
+```
+FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
+```
+

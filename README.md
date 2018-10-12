@@ -13,7 +13,7 @@ Those information will be written in a database, and a Machine Learning algorith
 
 ## Project graph
 ![Hyperparams.txt](docs/graph_project.png) 
-=======
+
 You need python 3 and the dependencies installed 
 
 # Installation
@@ -22,15 +22,7 @@ You need python 3 and the dependencies installed
 pip3 -r requirements.txt
 ```
 
-Info: freeze local packages into requirements.txt with following command
 
-```
-pipreqs ./ --force      
-```
-
-```
-pip install --upgrade google-cloud-vision
-```
 
 ## Start server
 
@@ -38,3 +30,16 @@ pip install --upgrade google-cloud-vision
 FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
 ```
 
+## Additionnal commands
+
+Remove the database (useful for dev purpose)
+
+```
+rm ./sqlite.db
+```
+
+Freeze local packages into requirements.txt with following command
+
+```
+pipreqs ./ --force      
+```

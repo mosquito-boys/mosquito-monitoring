@@ -3,3 +3,6 @@ gunicorn
 sqlite3
 google-cloud-vision
 environs
+tensorflow
+tensorflow-hub
+tensorboard

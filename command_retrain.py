@@ -64,9 +64,9 @@ class Retrain(th.Thread):
               " --validation_batch_size=-1" + \
               " --how_many_training_steps 4000" + \
               " --summaries_dir retrain_logs/" + \
-              " --train_maximum True" + \
-              " --validation_percentage 5" + \
-              " --testing_percentage 5"  # + \
+              " --train_maximum True" #+ \
+              #" --validation_percentage 5" + \
+              #" --testing_percentage 5"  # + \
         #  " --tfhub_module
         # 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
         #  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"

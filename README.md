@@ -27,6 +27,10 @@ Info: freeze local packages into requirements.txt with following command
 pipreqs ./ --force      
 ```
 
+```
+pip install --upgrade google-cloud-vision
+```
+
 ## Start server
 
 ```

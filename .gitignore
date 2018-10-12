@@ -4,3 +4,4 @@ __pycache__
 .env
 sqlite.db
 test.py
+google-cloud-credentials.json

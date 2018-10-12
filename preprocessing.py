@@ -42,26 +42,26 @@
 
 import requests
 import base64
-import io
+import cv2
+import os
+from environs import Env
+env = Env()
+env.read_env()  # read .env file, if it exists
 
-image_path = 'dataset/aedes/pic_001.jpg'
+image_path = 'dataset/aedes/pic_003.jpg'
 with open(image_path, 'rb') as image_file:
-    content = base64.b64encode(image_file.read())
-
-    # content = base64.b64encode(image_file.read())
-    # content = image_file.read().encode("base64")
-    print(type(content))
+    content = base64.encodebytes(image_file.read())
 
 url = "https://vision.googleapis.com/v1/images:annotate"
 
-querystring = {"key": "AIzaSyDwM94lr-M6jeiKWh36_oziESXCP0jpujY"}
+querystring = {"key": os.environ["GOOGLE_APPLICATION_CREDENTIALS"]}
 
 payload = {
     "requests":
         [
             {
                 "image": {
-                    "content": str(content)
+                    "content": content.decode("utf8")
                 },
                 "features": [
                     {
@@ -80,4 +80,19 @@ headers = {
 
 response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
 
-print(response.text)
+coords = response.json()["responses"][0]["localizedObjectAnnotations"][0]["boundingPoly"]["normalizedVertices"]
+
+print(coords)
+
+img = cv2.imread(image_path)
+
+pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
+pt2 = (int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
+
+print(len(img), len(img[0]))
+print(pt1)
+print(pt2)
+cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
+
+cv2.imshow('image',img)
+cv2.waitKey(0)

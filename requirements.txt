@@ -6,3 +6,4 @@ environs
 tensorflow
 tensorflow-hub
 tensorboard
+opencv-python

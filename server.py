@@ -9,6 +9,7 @@ def renderHTML():
 @app.route("/postform", methods=["POST"])
 def postForm():
     print(request.files)
+    # request.form
     return "Form received !"
 
 

@@ -7,7 +7,7 @@ class Species:
         (private) mosquitos (Mosquito List): list of the mosquitos with this species
     """
 
-    __id = 0
+    __id_species = 0
 
     def __init__(self, name):
         """
@@ -16,5 +16,5 @@ class Species:
         """
         self.__name = name
         self.__mosquitos = []
-        self.__id = Species.__id
-        Species.__id += 1
+        self.__id_species = Species.__id_species
+        Species.__id_species += 1

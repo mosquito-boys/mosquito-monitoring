@@ -7,7 +7,7 @@ class Mosquito:
         (private) user (User): the User who uploaded this mosquito
     """
 
-    __id = 0
+    __id_mosquito = 0
 
     def __init__(self, user):
         """
@@ -16,8 +16,8 @@ class Mosquito:
         """
         self.__species = None
         self.__user = user
-        self.__id = Mosquito.__id
-        Mosquito.__id += 1
+        self.__id_mosquito = Mosquito.__id_mosquito
+        Mosquito.__id_mosquito += 1
 
     @property
     def species(self):

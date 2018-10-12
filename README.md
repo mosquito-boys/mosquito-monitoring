@@ -1,5 +1,6 @@
 # mosquito-monitoring
 Identify mosquito species and collect data to anticipate epidemics propagation
+for a CentraleSupelec project
 
 # Introduction
 ## Project purpose
@@ -25,6 +26,10 @@ Info: freeze local packages into requirements.txt with following command
 
 ```
 pipreqs ./ --force      
+```
+
+```
+pip install --upgrade google-cloud-vision
 ```
 
 ## Start server

@@ -2,6 +2,8 @@
 Identify mosquito species and collect data to anticipate epidemics propagation
 for a CentraleSupelec project
 
+Deployment : [https://mosquito-monitor.herokuapp.com/](https://mosquito-monitor.herokuapp.com/)
+
 # Introduction
 ## Project purpose
 The purpose of this project is to be able to monitor and later anticipate mosquito related epidemics.

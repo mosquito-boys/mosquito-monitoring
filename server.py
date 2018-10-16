@@ -1,9 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
+
 app = Flask(__name__)
 
+
 @app.route("/")
-def renderHTML():cd
-    return app.send_static_file("index.html")
+def renderHTML():
+    return render_template("index.html")
 
 
 @app.route("/postform", methods=["POST"])

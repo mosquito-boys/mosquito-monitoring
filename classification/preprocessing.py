@@ -89,7 +89,15 @@ class preprocessing():
         response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
         # coordinates of 4 points framing the mosquito
         # in percentage of image width for x and percentage of image length for y
-        coords = response.json()["responses"][0]["localizedObjectAnnotations"][0]["boundingPoly"]["normalizedVertices"]
+        response = response.json()["responses"][0]["localizedObjectAnnotations"]
+
+        #Fetching coordinates of an insect and not something else
+        coords = None
+        for res in response:
+            if res['name'] == 'Insect':
+                coords = res["boundingPoly"]["normalizedVertices"]
+                break
+            
         return coords
         
     @staticmethod

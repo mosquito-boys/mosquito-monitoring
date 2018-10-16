@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Mosquito Monitor</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
+    <div class="container">
+
+
 	<div id="header">
 		<h1>The mosquito monitoring project</h1>
 		<img id="centralesupelec_logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Ecole_Centrale_Supelec_logo.svg" alt="CentraleSupélec logo"/>
@@ -13,13 +17,94 @@
 		<p>Developped by the <i>the mosquito-boys team</i> from the french engineering school, CentraleSupélec<br/>Victor Aubin, Marc Than Van Con and Paul Asquin</p>
 		
 	</div>
+
 	<div id="form">
+{#        FORMULAIRE #}
 	    <form action="/postform" method="post" enctype="multipart/form-data">
+
+            <legend>User Information</legend>
+
+{#            USER BASIC INFORMATIONS #}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+
+            {#            IS SCIENTIST #}
+            <div class="form-group">
+                <label>Are you a Mosquito scientist?</label>
+                    <input type="radio" class="form-check-input" name="scientistCheck" id="isScientist" value="Yes" unchecked>
+                    Yes
+                    <input type="radio" class="form-check-input" name="scientistCheck" id="isNotScientist" value="No" checked>
+                    No
+                </label>
+            </div>
+
+{#            SPECIES INTUITION #}
+            <fieldset class="form-group" id="speciesCheck" hidden>
+                <legend>Which mosquito species is it?</legend>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species1" value="option1" unchecked>
+                    Aedes
+                  </label>
+                </div>
+                <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species2" value="option2" unchecked>
+                    Anopheles
+                  </label>
+                </div>
+                <div class="form-check disabled">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species3" value="option3" unchecked>
+                    Culex
+                  </label>
+                </div>
+            </fieldset>
+
+{#            COMMMENT #}
+            <div class="form-group">
+                <label for="exampleTextarea">Comment</label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+
+{#            MOSQUITO UPLOAD #}
 	        Select image to upload:
 	        <input type="file" name="fileToUpload" id="fileToUpload">
-	        <input type="submit" value="Upload Image" name="submit">
-	    </form>
+            </br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 	</div>
+    </div>
+<script>
+
+    document.getElementById("isScientist").checked = false;
+
+    if (document.getElementById("isScientist").checked) {
+        enableSpeciesSelection()
+    } else {
+        disableSpeciesSelection()
+    }
+
+
+    document.getElementById("isScientist").addEventListener("change", enableSpeciesSelection);
+
+    function disableSpeciesSelection() {
+        document.getElementById("speciesCheck").hidden = true;
+    }
+
+    document.getElementById("isNotScientist").addEventListener("change", disableSpeciesSelection);
+
+    function enableSpeciesSelection() {
+        document.getElementById("speciesCheck").hidden = false;
+    }
+</script>
 
 </body>
 </html>

@@ -1,11 +1,22 @@
 import sqlite3
+import os
+from classes.DBEngine import DBEngine
 
-class DBManager:
 
-    def __init__(self):
+class SQLiteEngine(DBEngine):
+    """
+    Implementation of the DBEngine abstract class for the SQLite DB.
+
+    __db_name: name of the SQLite file stored in the root directory of the project
+    """
+
+    __db_name = "SQLite.db"
+
+    @staticmethod
+    def create_database():
         print("initializating DB...")
 
-        connection = sqlite3.connect('../sqlite.db')
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS User (id_user integer NOT NULL PRIMARY KEY, 
@@ -22,32 +33,39 @@ class DBManager:
         connection.commit()
         connection.close()
 
-    def get_mosquitos_by_species(self):
-        connection = sqlite3.connect('../sqlite.db')
+    @staticmethod
+    def drop_database():
+        print("Droping Database...")
+        os.remove(SQLiteEngine.__db_name)
+
+    @staticmethod
+    def get_mosquitos_by_species():
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''SELECT * FROM Mosquito''')
 
         res = cursor.fetchall()
-        print(res)
+        print("get mosquitos", res)
 
         connection.commit()
         connection.close()
 
-    def store_mosquito(self):
-        connection = sqlite3.connect('../sqlite.db')
+    @staticmethod
+    def store_mosquito():
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''INSERT INTO Mosquito(id_mosquito, id_species, id_user) VALUES(0, 0, 0)''')
 
         res = cursor.fetchall()
-        print(res)
+        print("store mosquito", res)
 
         connection.commit()
         connection.close()
 
 
 if __name__ == "__main__":
-    db = DBManager()
 
-
-    db.store_mosquito()
-    db.get_mosquitos_by_species()
+    SQLiteEngine.create_database()
+    SQLiteEngine.store_mosquito()
+    SQLiteEngine.get_mosquitos_by_species()
+    SQLiteEngine.drop_database()

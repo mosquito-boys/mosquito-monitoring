@@ -39,60 +39,94 @@
 #
 # localize_mosquitoes('dataset/aedes/pic_001.jpg')
 
-
+#Libraries and environment setting
 import requests
 import base64
 import cv2
 import os
+import glob
+
 from environs import Env
+
+
 env = Env()
 env.read_env()  # read .env file, if it exists
 
-image_path = 'dataset/aedes/pic_003.jpg'
-with open(image_path, 'rb') as image_file:
-    content = base64.encodebytes(image_file.read())
 
-url = "https://vision.googleapis.com/v1/images:annotate"
+class preprocessing():
 
-querystring = {"key": os.environ["GOOGLE_APPLICATION_CREDENTIALS"]}
+    @staticmethod
+    def mosquito_position(image_path):
+        with open(image_path, 'rb') as image_file:
+            content = base64.encodebytes(image_file.read())
 
-payload = {
-    "requests":
-        [
-            {
-                "image": {
-                    "content": content.decode("utf8")
-                },
-                "features": [
+        url = "https://vision.googleapis.com/v1/images:annotate"
+
+        querystring = {"key": os.environ["GOOGLE_APPLICATION_CREDENTIALS"]}
+
+        payload = {
+            "requests":
+                [
                     {
-                        "type": "OBJECT_LOCALIZATION",
-                        "maxResults": 100,
-                        "model": ""
+                        "image": {
+                            "content": content.decode("utf8")
+                        },
+                        "features": [
+                            {
+                                "type": "OBJECT_LOCALIZATION",
+                                "maxResults": 100,
+                                "model": ""
+                            }
+                        ]
                     }
                 ]
-            }
-        ]
-}
-headers = {
-    'Content-Type': "application/json",
-    'cache-control': "no-cache"
-}
+        }
+        headers = {
+            'Content-Type': "application/json",
+            'cache-control': "no-cache"
+        }
 
-response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
+        response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
+        # coordinates of 4 points framing the mosquito
+        # in percentage of image width for x and percentage of image length for y
+        coords = response.json()["responses"][0]["localizedObjectAnnotations"][0]["boundingPoly"]["normalizedVertices"]
+        return coords
+        
+    @staticmethod
+    def mosquito_croping(coords, image_path):
+        img = cv2.imread(image_path)
 
-coords = response.json()["responses"][0]["localizedObjectAnnotations"][0]["boundingPoly"]["normalizedVertices"]
+        pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
+        pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
 
-print(coords)
+        print(len(img), len(img[0]))
+        print(pt1)
+        print(pt2)
+        crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+        cv2.imshow('image',crop_img)
+        cv2.waitKey(0)
+    
+    @staticmethod
+    def mosquito_framing(coords, image_path):
+        img = cv2.imread(image_path)
 
-img = cv2.imread(image_path)
+        pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
+        pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
 
-pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
-pt2 = (int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
+        print(len(img), len(img[0]))
+        print(pt1)
+        print(pt2)
+        cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
 
-print(len(img), len(img[0]))
-print(pt1)
-print(pt2)
-cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
+        cv2.imshow('image',img)
+        cv2.waitKey(0)
 
-cv2.imshow('image',img)
-cv2.waitKey(0)
+    
+
+
+##Test
+image_path = 'dataset/aedes/pic_003.jpg'
+coords = preprocessing.mosquito_position(image_path)
+
+preprocessing.mosquito_framing(coords, image_path)
+preprocessing.mosquito_croping(coords, image_path)

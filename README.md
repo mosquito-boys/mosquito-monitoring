@@ -12,9 +12,12 @@ Crossing the information about mosquito species, localization, temperature and p
 The user can upload a mosquito picture and will be asked to provide additional information as they localization or the mosquito species if known.
 Those information will be written in a database, and a Machine Learning algorithm will try to identify where the mosquito is located in the image and what is its species. 
 
+![Slide 1](docs/slide_1.png) 
+![Slide 2](docs/slide_2.png) 
+
 
 ## Project graph
-![Hyperparams.txt](docs/graph_project.png) 
+![Project Graph](docs/graph_project.png) 
 
 You need python 3 and the dependencies installed 
 

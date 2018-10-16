@@ -1,0 +1,18 @@
+body
+{
+	width: 950px;
+	margin-top: 1%;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: "Open Sans", "Calibri", "Arial", sans-serif;
+	/*background-image: url("../Ressources/fond6.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-position: top;
+	background-color: white;
+	background-attachment: fixed;
+	background-size: cover;
+	color: #365F91;*/
+	background-color: blue;
+	height: 100%;
+}

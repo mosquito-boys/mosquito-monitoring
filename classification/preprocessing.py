@@ -97,8 +97,10 @@ class preprocessing():
             if res['name'] == 'Insect':
                 coords = res["boundingPoly"]["normalizedVertices"]
                 break
-            
-        return coords
+        if coords = None:
+            print('No insect was found on the picture')
+        else:
+            return coords
         
     @staticmethod
     def mosquito_croping(coords, image_path):
@@ -152,9 +154,8 @@ class preprocessing():
 
 ##Test
 
-preprocessing.crop_all()
-#image_path = 'dataset/aedes/pic_003.jpg'
-#coords = preprocessing.mosquito_position(image_path)
+image_path = 'dataset/aedes/pic_003.jpg'
+print(preprocessing.mosquito_position(image_path))
 
 #preprocessing.mosquito_framing(coords, image_path)
 #preprocessing.mosquito_croping(coords, image_path)

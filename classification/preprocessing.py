@@ -103,8 +103,7 @@ class preprocessing():
         print(pt1)
         print(pt2)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
-        cv2.imshow('image',crop_img)
-        cv2.waitKey(0)
+        return crop_img
     
     @staticmethod
     def mosquito_framing(coords, image_path):
@@ -122,11 +121,32 @@ class preprocessing():
         cv2.waitKey(0)
 
     
-
+    @staticmethod
+    def crop_all():
+        species_folder = [s.split('/') for s in glob.glob('dataset/*')]
+        species = [s[len(s)-1] for s in species_folder]
+        for s in species:
+            images = [im.split('/') for im in glob.glob('dataset/' + s + '/*.jp*')]
+            images = [im[len(im)-1] for im in images]
+            
+            already_croped_images = [imc.split('/') for imc in glob.glob('dataset_crop/' + s + '/*.jp*')]
+            already_croped_images = [imc[len(imc)-1] for imc in already_croped_images]
+            for im in images:
+                if im in already_croped_images:
+                    continue
+                relative_path = '/dataset/' + s + '/' +  im
+                print(s)
+                print(relative_path)
+                coords = preprocessing.mosquito_position(relative_path)
+                croped = preprocessing.mosquito_croping(relative_path, coords)
+                saving_path = '/dataset_crop/' + s + im
+                cv2.imwrite(saving_path, croped)
 
 ##Test
-image_path = 'dataset/aedes/pic_003.jpg'
-coords = preprocessing.mosquito_position(image_path)
 
-preprocessing.mosquito_framing(coords, image_path)
-preprocessing.mosquito_croping(coords, image_path)
+preprocessing.crop_all()
+#image_path = 'dataset/aedes/pic_003.jpg'
+#coords = preprocessing.mosquito_position(image_path)
+
+#preprocessing.mosquito_framing(coords, image_path)
+#preprocessing.mosquito_croping(coords, image_path)

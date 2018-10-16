@@ -8,32 +8,6 @@ TENSOR_FOLDER = "tensorflow"
 IMAGE_DIR = "../dataset"
 
 
-def getExportNumber(tensorFolder):
-    """ Arrange the models in different files for monitoring the model versions
-    Get the number of the export folder looking at already existing folders
-    Handle the presence of '_precisions' at the end of the folder name """
-
-    lesDir = os.listdir(tensorFolder)
-    lesExport = []
-    lesNum = []
-    num = 0
-    for dir in lesDir:
-        if "export_" in dir:
-            lesExport.append(dir)
-    for i in range(len(lesExport)):
-        # Get number of export and add 1 to it
-        # If we have an extension in the name
-        if lesExport[i][7:].find("_") != -1:
-            lesNum.append(int(lesExport[i][7:7 + lesExport[i][7:].find("_")]))
-        # If there is not extension
-        else:
-            lesNum.append(int(lesExport[i][7:]))
-
-    if len(lesNum) != 0:
-        num = max(lesNum) + 1
-    return num
-
-
 class Retrain(th.Thread):
     def __init__(self):
         print("Starting Retrain")
@@ -47,7 +21,7 @@ class Retrain(th.Thread):
 
         if not os.path.isdir(TENSOR_FOLDER):
             os.mkdir(TENSOR_FOLDER)
-        export_number = getExportNumber(TENSOR_FOLDER)
+        export_number = self.getExportNumber(TENSOR_FOLDER)
         export_path = str(TENSOR_FOLDER) + "/export_" + str(export_number)
         os.mkdir(export_path)
 
@@ -64,9 +38,9 @@ class Retrain(th.Thread):
               " --validation_batch_size=-1" + \
               " --how_many_training_steps 4000" + \
               " --summaries_dir retrain_logs/" + \
-              " --train_maximum True" #+ \
-              #" --validation_percentage 5" + \
-              #" --testing_percentage 5"  # + \
+              " --train_maximum True"  # + \
+        # " --validation_percentage 5" + \
+        # " --testing_percentage 5"  # + \
         #  " --tfhub_module
         # 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
         #  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"
@@ -78,6 +52,32 @@ class Retrain(th.Thread):
         out, err = p.communicate()
         print(out.decode('utf-8'))
         print("Retrain ended")
+
+    def getExportNumber(self, tensor_folder):
+
+        """ Arrange the models in different files for monitoring the model versions
+        Get the number of the export folder looking at already existing folders
+        Handle the presence of '_precisions' at the end of the folder name """
+
+        lesDir = os.listdir(tensor_folder)
+        lesExport = []
+        lesNum = []
+        num = 0
+        for dir in lesDir:
+            if "export_" in dir:
+                lesExport.append(dir)
+        for i in range(len(lesExport)):
+            # Get number of export and add 1 to it
+            # If we have an extension in the name
+            if lesExport[i][7:].find("_") != -1:
+                lesNum.append(int(lesExport[i][7:7 + lesExport[i][7:].find("_")]))
+            # If there is not extension
+            else:
+                lesNum.append(int(lesExport[i][7:]))
+
+        if len(lesNum) != 0:
+            num = max(lesNum) + 1
+        return num
 
     def stop(self):
         self._stop_event.set()
@@ -102,18 +102,16 @@ class Tensorboard(th.Thread):
 def main():
     try:
         # Kill precedent residual tensorboard server
-        os.system("killall tensorboard")
+        # os.system("killall tensorboard")
         # Launch retrain thread
+        print(
+            "Starting the training. Enter Ctrl+C at anytime to stop the processes, and in the end to stop tensorboard")
         retrain_thread = Retrain()
         tensorboard_thread = Tensorboard()
         retrain_thread.start()
         tensorboard_thread.start()
         retrain_thread.join()
         tensorboard_thread.join()
-
-        input("Press a key to stop the program and stop tensorboard")
-
-        return 0
     except KeyboardInterrupt:
         retrain_thread.stop()
         tensorboard_thread.stop()

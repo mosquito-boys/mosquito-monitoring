@@ -48,15 +48,15 @@ import glob
 
 from environs import Env
 
-
 env = Env()
 env.read_env()  # read .env file, if it exists
-
 
 class preprocessing():
 
     @staticmethod
     def mosquito_position(image_path):
+    #retrieves coordinates of 4 points in the image framing the mosquito
+    #(image width pct for x,  image length pct for y)
         with open(image_path, 'rb') as image_file:
             content = base64.encodebytes(image_file.read())
 
@@ -87,75 +87,49 @@ class preprocessing():
         }
 
         response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
-        # coordinates of 4 points framing the mosquito
-        # in percentage of image width for x and percentage of image length for y
         response = response.json()["responses"][0]["localizedObjectAnnotations"]
 
-        #Fetching coordinates of an insect and not something else
         coords = None
         for res in response:
-            if res['name'] == 'Insect':
+            if res['name'] == 'Insect': #only fetching the first insect labeled objects
                 coords = res["boundingPoly"]["normalizedVertices"]
                 break
-        if coords = None:
+        if coords is None:
             print('No insect was found on the picture')
         else:
             return coords
         
     @staticmethod
     def mosquito_croping(coords, image_path):
+    #crops the image around the mosquito and resizes the image into a square
         img = cv2.imread(image_path)
 
         pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
         pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
 
-        print(len(img), len(img[0]))
-        print(pt1)
-        print(pt2)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+
+        dim = (150,150)
+        crop_img = cv2.resize(crop_img, dim, interpolation = cv2.INTER_AREA)
         return crop_img
     
     @staticmethod
     def mosquito_framing(coords, image_path):
+    #appends a black rectangle around the mosquito
         img = cv2.imread(image_path)
 
         pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
         pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
 
-        print(len(img), len(img[0]))
-        print(pt1)
-        print(pt2)
         cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
 
-        cv2.imshow('image',img)
-        cv2.waitKey(0)
-
-    
-    @staticmethod
-    def crop_all():
-        species_folder = [s.split('/') for s in glob.glob('dataset/*')]
-        species = [s[len(s)-1] for s in species_folder]
-        for s in species:
-            images = [im.split('/') for im in glob.glob('dataset/' + s + '/*.jp*')]
-            images = [im[len(im)-1] for im in images]
-            
-            already_croped_images = [imc.split('/') for imc in glob.glob('dataset_crop/' + s + '/*.jp*')]
-            already_croped_images = [imc[len(imc)-1] for imc in already_croped_images]
-            for im in images:
-                if im in already_croped_images:
-                    continue
-                relative_path = '/dataset/' + s + '/' +  im
-                print(s)
-                print(relative_path)
-                coords = preprocessing.mosquito_position(relative_path)
-                croped = preprocessing.mosquito_croping(relative_path, coords)
-                saving_path = '/dataset_crop/' + s + im
-                cv2.imwrite(saving_path, croped)
+        return img
 
 ##Test
 
-image_path = 'dataset/aedes/pic_003.jpg'
-print(preprocessing.mosquito_position(image_path))
-
-#preprocessing.mosquito_framing(coords, image_path)
+#image_path = 'dataset/aedes/pic_009.jpg'
+#saving_path = 'preprossing_test_img/'
+#coords = preprocessing.mosquito_position(image_path)
+#cv2.imwrite(saving_path + 'framed_pic_009.jpg',preprocessing.mosquito_framing(coords, image_path))
+#cv2.imwrite(saving_path + 'croped_pic_009.jpg',preprocessing.mosquito_croping(coords, image_path))
 #preprocessing.mosquito_croping(coords, image_path)

@@ -27,11 +27,11 @@
 {#            USER BASIC INFORMATIONS #}
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
 
@@ -50,19 +50,19 @@
                 <legend>Which mosquito species is it?</legend>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species1" value="option1" unchecked>
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species1" value="Aedes" unchecked>
                     Aedes
                   </label>
                 </div>
                 <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species2" value="option2" unchecked>
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species2" value="Anopheles" unchecked>
                     Anopheles
                   </label>
                 </div>
                 <div class="form-check disabled">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species3" value="option3" unchecked>
+                    <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species3" value="Culex" unchecked>
                     Culex
                   </label>
                 </div>
@@ -71,7 +71,7 @@
 {#            COMMMENT #}
             <div class="form-group">
                 <label for="exampleTextarea">Comment</label>
-                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                <textarea class="form-control" name="comment" id="exampleTextarea" rows="3"></textarea>
               </div>
 
 {#            MOSQUITO UPLOAD #}

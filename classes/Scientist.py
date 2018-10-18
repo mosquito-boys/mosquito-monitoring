@@ -1,6 +1,5 @@
 from classes.User import User
 
-
 class Scientist(User):
     """
     User who is a scientist. Is considered to know the mosquito species

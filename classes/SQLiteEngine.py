@@ -2,7 +2,6 @@ import sqlite3
 import os
 from classes.DBEngine import DBEngine
 
-
 class SQLiteEngine(DBEngine):
     """
     Implementation of the DBEngine abstract class for the SQLite DB.

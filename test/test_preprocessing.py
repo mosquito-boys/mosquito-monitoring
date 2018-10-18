@@ -2,7 +2,7 @@ import os
 import classification.preprocessing as pre
 import cv2
 
-image_path = 'dataset/aedes/pic_009.jpg'
+image_path = 'dataset/anopheles/pic_014.jpg'
 
 coords = pre.Preprocessing.mosquito_position(image_path)
 

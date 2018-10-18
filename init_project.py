@@ -26,14 +26,14 @@ class InitProject():
         labels = [folder.split("/")[-2] for folder in glob.glob(dataset_path + "/*/")]
         print("Found labels: " + str(labels))
 
-        i = 0
+
 
         for label in labels:
             print("=== " + label + " ===")
             self.check_create_folder("/".join([preprocessed_dataset_path, label]))
             # getting image names from the folder
             image_names = [file.split("/")[-1] for file in glob.glob(dataset_path + "/" + label + "/*.jp*")]
-
+            i = 0
             for image_name in image_names:
                 preprocessed_image_name = "crop_" + image_name
                 # generate path for original and preprocessed image
@@ -45,13 +45,16 @@ class InitProject():
                     # ask for computing the preprocessed image and to write it at the desired path
                     try:
                         i += 1
-                        if i < 5:
+                        if True:
                             print("+ Saving preprocessed " + path_preprocessed_image)
                             preprocessing.Preprocessing.save_crop_img(path_image, path_preprocessed_image)
                         else:
                             break
                     except Errors.InsectNotFound:
                         print("\tCan't crop the image")
+                    except KeyError:
+                        print("- not vector found for " + path_preprocessed_image)
+                        #TODO create a formal error
                 else:
                     print("o Already preprocessed " + image_name)
 

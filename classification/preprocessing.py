@@ -113,6 +113,5 @@ class Preprocessing:
         :param path_preprocessed:
         """
         coords = Preprocessing.mosquito_position(path_origin)
-        print(coords)
         crop_img = Preprocessing.mosquito_croping(coords, path_origin)
         cv2.imwrite(path_preprocessed, crop_img)

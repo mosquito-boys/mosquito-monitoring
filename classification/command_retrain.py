@@ -5,7 +5,7 @@ import threading as th
 import subprocess
 
 TENSOR_FOLDER = "tensorflow"
-IMAGE_DIR = "../dataset"
+IMAGE_DIR = "../preprocessed_dataset"
 
 
 class Retrain(th.Thread):

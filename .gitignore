@@ -5,3 +5,4 @@ __pycache__
 sqlite.db
 test.py
 google-cloud-credentials*.json
+.DS_Store

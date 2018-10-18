@@ -65,17 +65,19 @@ class Preprocessing:
             return coords
 
     @staticmethod
+    def compute_pt(coords, img):
+        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
+        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
+        return pt1, pt2
+
+    @staticmethod
     def mosquito_croping(coords, image_path):
         """
         crops the image around the mosquito and resizes the image into a square
         """
         img = cv2.imread(image_path)
-
-        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
-        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
-
+        pt1, pt2 = Preprocessing.compute_pt(coords, img)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
-
         dim = (150, 150)
         crop_img = cv2.resize(crop_img, dim, interpolation=cv2.INTER_AREA)
         return crop_img
@@ -87,17 +89,14 @@ class Preprocessing:
         """
         # appends a black rectangle around the mosquito
         img = cv2.imread(image_path)
-
-        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
-        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
-
+        pt1, pt2 = Preprocessing.compute_pt(coords, img)
         cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
-
         return img
 
     @staticmethod
-    def save_img(img, path):
-        cv2.imwrite(path, img)
+    def save_crop_img(path_origin, path_preprocessed):
+        crop_img = Preprocessing.mosquito_croping(Preprocessing.mosquito_position(path_origin))
+        cv2.imwrite(path_preprocessed, crop_img)
 
 ##Test
 

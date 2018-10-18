@@ -1,6 +1,3 @@
-from classes import Scientist
-
-
 class User:
     """
     Represent a user who uploaded a mosquito
@@ -18,11 +15,8 @@ class User:
         self.__id_user = User.__id_user
         User.__id_user += 1
 
-    def is_scientist(self):
-        """
-        :return: True if the user is a scientist, false if not
-        """
-        return isinstance(self, Scientist)
-
-
-
+    # def is_scientist(self):
+    #     """
+    #     :return: True if the user is a scientist, false if not
+    #     """
+    #     return isinstance(self, Scientist)

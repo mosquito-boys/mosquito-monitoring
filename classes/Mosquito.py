@@ -9,7 +9,7 @@ class Mosquito:
 
     __id_mosquito = 0
 
-    def __init__(self, user):
+    def __init__(self, user, picture):
         """
         Class constructor
         :param user (User): the User who uploaded this mosquito
@@ -17,6 +17,7 @@ class Mosquito:
         self.__species = None
         self.__user = user
         self.__id_mosquito = Mosquito.__id_mosquito
+        self.__picture = picture
         Mosquito.__id_mosquito += 1
 
     @property
@@ -26,4 +27,8 @@ class Mosquito:
         :return: private attribute species
         """
         return self.__species
+
+    @property
+    def picture(self):
+        return self.__picture
 

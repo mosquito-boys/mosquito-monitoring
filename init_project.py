@@ -53,7 +53,7 @@ class InitProject():
                     except Errors.InsectNotFound:
                         print("\tCan't crop the image")
                 else:
-                    print("o Already preprocessed " + path_preprocessed_image)
+                    print("o Already preprocessed " + image_name)
 
 
 InitProject()

@@ -3,6 +3,7 @@
 import glob
 import os
 import classification.preprocessing as preprocessing
+from classes import Errors
 
 
 class InitProject():
@@ -44,12 +45,12 @@ class InitProject():
                     # ask for computing the preprocessed image and to write it at the desired path
                     try:
                         i += 1
-                        if i < 3:
+                        if i < 5:
                             print("+ Saving preprocessed " + path_preprocessed_image)
                             preprocessing.Preprocessing.save_crop_img(path_image, path_preprocessed_image)
                         else:
                             break
-                    except InsectNotFound:
+                    except Errors.InsectNotFound:
                         print("\tCan't crop the image")
                 else:
                     print("o Already preprocessed " + path_preprocessed_image)

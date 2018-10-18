@@ -60,7 +60,7 @@ class Preprocessing:
                 break
         if coords is None:
             print('\tNo insect was found on the picture')
-            raise InsectNotFound
+            raise Errors.InsectNotFound
         else:
             return coords
 

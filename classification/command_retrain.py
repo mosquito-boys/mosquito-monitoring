@@ -18,7 +18,7 @@ class Retrain(th.Thread):
         """
         Retrain the tensorflow model using JPG images
         """
-
+        os.system("killall tensorboard")
         if not os.path.isdir(TENSOR_FOLDER):
             os.mkdir(TENSOR_FOLDER)
         export_number = self.getExportNumber(TENSOR_FOLDER)
@@ -28,8 +28,8 @@ class Retrain(th.Thread):
         print("export_path : " + export_path)
         if not os.path.isdir(TENSOR_FOLDER):
             os.mkdir(TENSOR_FOLDER)
-
-        cmd = "python3 retrain.py" \
+        path_retrain = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["retrain.py"])
+        cmd = "python3 " + path_retrain + \
               " --image_dir " + str(IMAGE_DIR) + \
               " --output_graph " + export_path + "/graph.db" + \
               " --output_labels " + export_path + "/labels.txt" + \

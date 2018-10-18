@@ -20,7 +20,7 @@ You need python 3 and the dependencies installed
 # Installation
 
 ```
-pip3 -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 
@@ -43,6 +43,15 @@ Freeze local packages into requirements.txt with following command
 
 ```
 pipreqs ./ --force      
+```
+
+## Run the tests
+
+Don't run directly the scripts independently.
+To test them, run the corresponding test script like below:
+
+```
+python3 -m tests.my_test
 ```
 
 # Project Slides

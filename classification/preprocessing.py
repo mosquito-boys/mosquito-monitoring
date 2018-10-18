@@ -39,7 +39,7 @@
 #
 # localize_mosquitoes('dataset/aedes/pic_001.jpg')
 
-#Libraries and environment setting
+# Libraries and environment setting
 import requests
 import base64
 import cv2
@@ -51,12 +51,13 @@ from environs import Env
 env = Env()
 env.read_env()  # read .env file, if it exists
 
-class preprocessing():
+
+class Preprocessing():
 
     @staticmethod
     def mosquito_position(image_path):
-    #retrieves coordinates of 4 points in the image framing the mosquito
-    #(image width pct for x,  image length pct for y)
+        # retrieves coordinates of 4 points in the image framing the mosquito
+        # (image width pct for x,  image length pct for y)
         with open(image_path, 'rb') as image_file:
             content = base64.encodebytes(image_file.read())
 
@@ -91,35 +92,35 @@ class preprocessing():
 
         coords = None
         for res in response:
-            if res['name'] == 'Insect': #only fetching the first insect labeled objects
+            if res['name'] == 'Insect':  # only fetching the first insect labeled objects
                 coords = res["boundingPoly"]["normalizedVertices"]
                 break
         if coords is None:
             print('No insect was found on the picture')
         else:
             return coords
-        
+
     @staticmethod
     def mosquito_croping(coords, image_path):
-    #crops the image around the mosquito and resizes the image into a square
+        # crops the image around the mosquito and resizes the image into a square
         img = cv2.imread(image_path)
 
-        pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
-        pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
+        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
+        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
 
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
 
-        dim = (150,150)
-        crop_img = cv2.resize(crop_img, dim, interpolation = cv2.INTER_AREA)
+        dim = (150, 150)
+        crop_img = cv2.resize(crop_img, dim, interpolation=cv2.INTER_AREA)
         return crop_img
-    
+
     @staticmethod
     def mosquito_framing(coords, image_path):
-    #appends a black rectangle around the mosquito
+        # appends a black rectangle around the mosquito
         img = cv2.imread(image_path)
 
-        pt1 =(int(coords[0]["x"]*len(img[0])), int(coords[0]["y"]*len(img)))
-        pt2 =(int(coords[2]["x"]*len(img[0])), int(coords[2]["y"]*len(img)))
+        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
+        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
 
         cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
 
@@ -127,9 +128,9 @@ class preprocessing():
 
 ##Test
 
-#image_path = 'dataset/aedes/pic_009.jpg'
-#saving_path = 'preprossing_test_img/'
-#coords = preprocessing.mosquito_position(image_path)
-#cv2.imwrite(saving_path + 'framed_pic_009.jpg',preprocessing.mosquito_framing(coords, image_path))
-#cv2.imwrite(saving_path + 'croped_pic_009.jpg',preprocessing.mosquito_croping(coords, image_path))
-#preprocessing.mosquito_croping(coords, image_path)
+# image_path = 'dataset/aedes/pic_009.jpg'
+# saving_path = 'preprossing_test_img/'
+# coords = preprocessing.mosquito_position(image_path)
+# cv2.imwrite(saving_path + 'framed_pic_009.jpg',preprocessing.mosquito_framing(coords, image_path))
+# cv2.imwrite(saving_path + 'croped_pic_009.jpg',preprocessing.mosquito_croping(coords, image_path))
+# preprocessing.mosquito_croping(coords, image_path)

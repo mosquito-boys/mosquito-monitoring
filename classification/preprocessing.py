@@ -4,16 +4,15 @@ import base64
 import cv2
 import os
 import glob
+from classes import Errors
 
 from environs import Env
 
 env = Env()
 env.read_env()  # read .env file, if it exists
-
-
-
 class Preprocessing:
     """
+    Contains methods to target the mosquito in a picture and to crop the picture accordingly
     """
 
     @staticmethod
@@ -60,12 +59,19 @@ class Preprocessing:
                 coords = res["boundingPoly"]["normalizedVertices"]
                 break
         if coords is None:
-            print('No insect was found on the picture')
+            print('\tNo insect was found on the picture')
+            raise Errors.InsectNotFound
         else:
             return coords
 
     @staticmethod
     def compute_pt(coords, img):
+        """
+        Compute pixel points
+        :param coords:
+        :param img:
+        :return pt1, pt2:
+        """
         pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
         pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
         return pt1, pt2
@@ -74,7 +80,10 @@ class Preprocessing:
     def mosquito_croping(coords, image_path):
         """
         crops the image around the mosquito and resizes the image into a square
+        :param coords
+        :param image_path
         """
+
         img = cv2.imread(image_path)
         pt1, pt2 = Preprocessing.compute_pt(coords, img)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
@@ -85,7 +94,9 @@ class Preprocessing:
     @staticmethod
     def mosquito_framing(coords, image_path):
         """
-
+        Put a black rectangle arround the mosquito in the intial picture
+        :param coords
+        :param image_path
         """
         # appends a black rectangle around the mosquito
         img = cv2.imread(image_path)
@@ -95,14 +106,13 @@ class Preprocessing:
 
     @staticmethod
     def save_crop_img(path_origin, path_preprocessed):
-        crop_img = Preprocessing.mosquito_croping(Preprocessing.mosquito_position(path_origin))
+        """
+        find the insect in of the given path image,
+        crop the image to the insect and save it in the given preprocessed path
+        :param path_origin:
+        :param path_preprocessed:
+        """
+        coords = Preprocessing.mosquito_position(path_origin)
+        print(coords)
+        crop_img = Preprocessing.mosquito_croping(coords, path_origin)
         cv2.imwrite(path_preprocessed, crop_img)
-
-##Test
-
-# image_path = 'dataset/aedes/pic_009.jpg'
-# saving_path = 'preprossing_test_img/'
-# coords = preprocessing.mosquito_position(image_path)
-# cv2.imwrite(saving_path + 'framed_pic_009.jpg',preprocessing.mosquito_framing(coords, image_path))
-# cv2.imwrite(saving_path + 'croped_pic_009.jpg',preprocessing.mosquito_croping(coords, image_path))
-# preprocessing.mosquito_croping(coords, image_path)

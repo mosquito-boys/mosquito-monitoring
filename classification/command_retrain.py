@@ -31,8 +31,8 @@ class Retrain(th.Thread):
 
         cmd = "python3 retrain.py" \
               " --image_dir " + str(IMAGE_DIR) + \
-              " --output_graph " + str(TENSOR_FOLDER) + "/imagenet_inception.db" + \
-              " --output_labels " + str(TENSOR_FOLDER) + "/imagenet_labels.txt" + \
+              " --output_graph " + export_path + "/graph.db" + \
+              " --output_labels " + export_path + "/labels.txt" + \
               " --saved_model_dir " + export_path + "/model/" + \
               " --print_misclassified_test_images" + \
               " --validation_batch_size=-1" + \

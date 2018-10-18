@@ -11,7 +11,6 @@ env = Env()
 env.read_env()  # read .env file, if it exists
 
 
-
 class Preprocessing:
     """
     """
@@ -60,12 +59,19 @@ class Preprocessing:
                 coords = res["boundingPoly"]["normalizedVertices"]
                 break
         if coords is None:
-            print('No insect was found on the picture')
+            print('\tNo insect was found on the picture')
+            raise InsectNotFound
         else:
             return coords
 
     @staticmethod
     def compute_pt(coords, img):
+        """
+        Compute pixel points
+        :param coords:
+        :param img:
+        :return pt1, pt2:
+        """
         pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
         pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
         return pt1, pt2
@@ -95,7 +101,15 @@ class Preprocessing:
 
     @staticmethod
     def save_crop_img(path_origin, path_preprocessed):
-        crop_img = Preprocessing.mosquito_croping(Preprocessing.mosquito_position(path_origin))
+        """
+        find the insect in of the given path image,
+        crop the image to the insect and save it in the given preprocessed path
+        :param path_origin:
+        :param path_preprocessed:
+        """
+        coords = Preprocessing.mosquito_position(path_origin)
+        print(coords)
+        crop_img = Preprocessing.mosquito_croping(coords, path_origin)
         cv2.imwrite(path_preprocessed, crop_img)
 
 ##Test

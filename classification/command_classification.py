@@ -156,7 +156,7 @@ class Predict():
         :param image_path:
         :param tensor_folder:
         :param automatic: set to False if you want to be asked to choose a model
-        :return: tab with labels and propability
+        :return: tab with labels and probabilities
         """
 
         path_label_image = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["label_image.py"])
@@ -175,6 +175,10 @@ class Predict():
 
 
 def train_and_monitor():
+    """
+    Start simultaneously a retraining and a tensorboard intstance
+    :return:
+    """
     print(
         "Starting the training. Enter Ctrl+C at anytime to stop the processes, and in the end to stop tensorboard")
 
@@ -190,5 +194,11 @@ def train_and_monitor():
         tensorboard_thread.stop()
         return 0
 
+
 def label_automatic(path_image):
+    """
+    Return the probabilities of the labels for a given image in path
+    :param path_image:
+    :return:
+    """
     print(Predict.label_image(path_image, TENSOR_FOLDER))

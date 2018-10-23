@@ -15,7 +15,7 @@ Those information will be written in a database, and a Machine Learning algorith
 ## Project graph
 ![Project Graph](docs/graph_project.png) 
 
-You need python 3 and the dependencies installed 
+You need python 3.6 and the dependencies installed 
 
 # Installation
 

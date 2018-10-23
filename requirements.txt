@@ -5,4 +5,4 @@ environs
 tensorflow
 tensorflow-hub
 tensorboard
-opencv-python
+opencv-contrib-python

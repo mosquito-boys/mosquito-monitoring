@@ -23,8 +23,6 @@ You need python 3 and the dependencies installed
 pip3 install -r requirements.txt
 ```
 
-
-
 ## Start server
 
 ```
@@ -45,7 +43,7 @@ Freeze local packages into requirements.txt with following command
 pipreqs ./ --force      
 ```
 
-## Run the tests
+# Run the tests
 
 Don't run directly the scripts independently.
 To test them, run the corresponding test script like below:
@@ -54,7 +52,7 @@ To test them, run the corresponding test script like below:
 python3 -m tests.my_test
 ```
 
-### Retrain
+## Retrain
 
 To run a retrain of Inception
 
@@ -63,9 +61,9 @@ python3 -m tests.test_command_classification --retrain
 ```
 You shall now wait for 3 to 7 minutes depending on your CPU
 
-### Prediction
+## Prediction
 
-To run a test for the image labelling on the default image 
+To run an image labelling test
 
 ```
 python3 -m tests.test_command_classification --label [optional path to one or more images]

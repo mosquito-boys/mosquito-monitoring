@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
-from classes.Mosquito import Mosquito
-from classes.User import User
+from db_model.Mosquito import Mosquito
+from db_model.User import User
 from classification.preprocessing import Preprocessing
 import os
 

@@ -3,8 +3,7 @@ import requests
 import base64
 import cv2
 import os
-import glob
-from classes import Errors
+from utilities import Errors
 
 from environs import Env
 

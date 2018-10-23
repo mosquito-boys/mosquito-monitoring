@@ -720,7 +720,7 @@ def add_final_retrain_ops(class_count, final_tensor_name, bottleneck_tensor,
                           quantize_layer, is_training):
   """Adds a new softmax and fully-connected layer for training and eval.
 
-  We need to retrain the top layer to identify our new classes, so this function
+  We need to retrain the top layer to identify our new db_model, so this function
   adds the right operations to the graph, along with some variables to hold the
   weights, and then sets up all the gradients for the backward pass.
 
@@ -825,12 +825,12 @@ def add_evaluation_step(result_tensor, ground_truth_tensor):
 def run_final_eval(train_session, module_spec, class_count, image_lists,
                    jpeg_data_tensor, decoded_image_tensor,
                    resized_image_tensor, bottleneck_tensor):
-  """Runs a final evaluation on an eval graph using the test data set.
+  """Runs a final evaluation on an eval graph using the tests data set.
 
   Args:
     train_session: Session for the train graph with the tensors below.
     module_spec: The hub.ModuleSpec for the image module being used.
-    class_count: Number of classes
+    class_count: Number of db_model
     image_lists: OrderedDict of training images for each label.
     jpeg_data_tensor: The layer to feed jpeg image data into.
     decoded_image_tensor: The output of decoding and resizing the image.
@@ -853,7 +853,7 @@ def run_final_eval(train_session, module_spec, class_count, image_lists,
           bottleneck_input: test_bottlenecks,
           ground_truth_input: test_ground_truth
       })
-  tf.logging.info('Final test accuracy = %.1f%% (N=%d)' %
+  tf.logging.info('Final tests accuracy = %.1f%% (N=%d)' %
                   (test_accuracy * 100, len(test_bottlenecks)))
 
   if FLAGS.print_misclassified_test_images:
@@ -869,7 +869,7 @@ def build_eval_session(module_spec, class_count):
 
   Args:
     module_spec: The hub.ModuleSpec for the image module being used.
-    class_count: Number of classes
+    class_count: Number of db_model
 
   Returns:
     Eval session containing the restored eval graph.
@@ -950,7 +950,7 @@ def export_model(module_spec, class_count, saved_model_dir):
 
   Args:
     module_spec: The hub.ModuleSpec for the image module being used.
-    class_count: The number of classes.
+    class_count: The number of db_model.
     saved_model_dir: Directory in which to save exported model and variables.
   """
   # The SavedModel should hold the eval graph.
@@ -987,7 +987,7 @@ def main(_):
   if class_count == 1:
     tf.logging.error('Only one valid folder of images found at ' +
                      FLAGS.image_dir +
-                     ' - multiple classes are needed for classification.')
+                     ' - multiple db_model are needed for classification.')
     return -1
 
   # See if the command-line flags mean we're applying any distortions.
@@ -1119,7 +1119,7 @@ def main(_):
     # After training is complete, force one last save of the train checkpoint.
     train_saver.save(sess, CHECKPOINT_NAME)
 
-    # We've completed all our training, so run a final test evaluation on
+    # We've completed all our training, so run a final tests evaluation on
     # some new images we haven't used before.
     run_final_eval(sess, module_spec, class_count, image_lists,
                    jpeg_data_tensor, decoded_image_tensor, resized_image_tensor,
@@ -1195,7 +1195,7 @@ if __name__ == '__main__':
       '--testing_percentage',
       type=int,
       default=10,
-      help='What percentage of images to use as a test set.'
+      help='What percentage of images to use as a tests set.'
   )
   parser.add_argument(
       '--validation_percentage',
@@ -1220,9 +1220,9 @@ if __name__ == '__main__':
       type=int,
       default=-1,
       help="""\
-      How many images to test on. This test set is only used once, to evaluate
+      How many images to tests on. This tests set is only used once, to evaluate
       the final accuracy of the model after training completes.
-      A value of -1 causes the entire test set to be used, which leads to more
+      A value of -1 causes the entire tests set to be used, which leads to more
       stable results across runs.\
       """
   )
@@ -1232,7 +1232,7 @@ if __name__ == '__main__':
       default=100,
       help="""\
       How many images to use in an evaluation batch. This validation set is
-      used much more often than the test set, and is an early indicator of how
+      used much more often than the tests set, and is an early indicator of how
       accurate the model is during training.
       A value of -1 causes the entire validation set to be used, which leads to
       more stable results across training iterations, but may be slower on large
@@ -1243,7 +1243,7 @@ if __name__ == '__main__':
       '--print_misclassified_test_images',
       default=False,
       help="""\
-      Whether to print out a list of all misclassified test images.\
+      Whether to print out a list of all misclassified tests images.\
       """,
       action='store_true'
   )

@@ -7,3 +7,4 @@ test.py
 google-cloud-credentials*.json
 .DS_Store
 tmp/*
+classification/tensorflow

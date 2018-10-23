@@ -3,7 +3,7 @@ import classification.command_classification as command_classification
 
 
 def test_command_retrain():
-    command_classification.test_and_monitor()
+    command_classification.train_and_monitor()
 
 
 def test_label_image():
@@ -11,7 +11,7 @@ def test_label_image():
 
 
 if __name__ == "__main__":
-    print("Testing command_retrain")
-    test_command_retrain()
+    #print("Testing command_retrain")
+    #test_command_retrain()
     print("Testing image labelling")
     test_label_image()

@@ -33,20 +33,7 @@ def postForm():
 
     os.remove("./tmp/" + files["fileToUpload"].filename)
 
-    return str(coords)
-
-
-    # zipf = zipfile.ZipFile('Name.zip', 'w', zipfile.ZIP_DEFLATED)
-    # for root, dirs, files in os.walk('output/'):
-    #     for file in files:
-    #         zipf.write('output/' + file)
-    # zipf.close()
-    # return send_file('Name.zip',
-    #                  mimetype='zip',
-    #                  attachment_filename='Name.zip',
-    #                  as_attachment=True)
-    #
-    # return send_file(, mimetype='image/gif')
+    return render_template("response.html")
 
 if __name__ == "__main__":
     app.run()

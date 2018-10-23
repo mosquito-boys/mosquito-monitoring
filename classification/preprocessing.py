@@ -119,6 +119,7 @@ class Preprocessing:
         cv2.imwrite(saving_path, crop_img)
         return saving_path
 
+    @staticmethod
     def save_framed_img(coords, path_origin, saving_path):
         """
         find the insect in of the given path image,

@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from classes.DBEngine import DBEngine
+from db_model.DBEngine import DBEngine
 
 class SQLiteEngine(DBEngine):
     """
@@ -68,3 +68,4 @@ if __name__ == "__main__":
     SQLiteEngine.store_mosquito()
     SQLiteEngine.get_mosquitos_by_species()
     SQLiteEngine.drop_database()
+    print("finished")

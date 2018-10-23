@@ -1,4 +1,4 @@
-from classes.User import User
+from db_model.User import User
 
 class Scientist(User):
     """

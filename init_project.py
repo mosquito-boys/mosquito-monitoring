@@ -3,7 +3,7 @@
 import glob
 import os
 import classification.preprocessing as preprocessing
-from classes import Errors
+from utilities import Errors
 
 
 class InitProject():

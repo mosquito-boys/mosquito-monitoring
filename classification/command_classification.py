@@ -59,7 +59,7 @@ class Retrain(th.Thread):
         self._stop_event.set()
 
 
-class Tools():
+class Tools:
     @staticmethod
     def getExportNumber(tensor_folder):
 
@@ -105,7 +105,7 @@ class Tensorboard(th.Thread):
         self._stop_event.set()
 
 
-class Predict():
+class Predict:
     """
     Method used to predict the label of an image using generated models.
     """

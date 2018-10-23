@@ -8,3 +8,4 @@ google-cloud-credentials*.json
 .DS_Store
 tmp/*
 classification/tensorflow
+retrain_logs

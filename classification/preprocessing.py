@@ -116,8 +116,10 @@ class Preprocessing:
         :param saving_path:
         """
         crop_img = Preprocessing.mosquito_croping(coords, path_origin)
-        cv2.imwrite(path_preprocessed, crop_img)
+        cv2.imwrite(saving_path, crop_img)
+        return saving_path
 
+    @staticmethod
     def save_framed_img(coords, path_origin, saving_path):
         """
         find the insect in of the given path image,
@@ -127,7 +129,7 @@ class Preprocessing:
         :param saving_path:
         """
         crop_img = Preprocessing.mosquito_framing(coords, path_origin)
-        cv2.imwrite(path_preprocessed, crop_img)
-        return path_preprocessed
+        cv2.imwrite(saving_path, crop_img)
+        return saving_path
 
 

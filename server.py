@@ -33,7 +33,7 @@ def postForm():
 
     os.remove("./tmp/" + files["fileToUpload"].filename)
 
-    return render_template("response.html")
+    return render_template("response.html", cropped_pic, framed_pic)
 
 if __name__ == "__main__":
     app.run()

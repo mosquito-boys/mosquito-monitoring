@@ -22,18 +22,18 @@ def postForm():
 
     user = User(form["name"], form["email"])
 
-    files["fileToUpload"].save("./tmp/" + files["fileToUpload"].filename)
+    files["fileToUpload"].save("./static/pictures/" + files["fileToUpload"].filename)
 
-    mosquito = Mosquito(user, "./tmp/" + files["fileToUpload"].filename)
+    mosquito = Mosquito(user, "./static/pictures/" + files["fileToUpload"].filename)
     coords = Preprocessing.mosquito_position(mosquito.picture)
 
 
     cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture + "_crop")
     framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture + "_framed")
 
-    os.remove("./tmp/" + files["fileToUpload"].filename)
+    os.remove("./static/pictures/" + files["fileToUpload"].filename)
 
-    return render_template("response.html", cropped_pic, framed_pic)
+    return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic)
 
 if __name__ == "__main__":
     app.run()

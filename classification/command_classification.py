@@ -4,13 +4,16 @@ import os
 import threading as th
 import subprocess
 import glob
+import tensorflow_hub as hub
 
 # Deactivation of Wwrning messages on compiled version
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
 IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset"])
-
+URL_MODEL = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+# 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
+#  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"
 
 class Retrain(th.Thread):
     def __init__(self, tensor_folder):
@@ -47,9 +50,7 @@ class Retrain(th.Thread):
               " --tfhub_module https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
         # " --validation_percentage 5" + \
         # " --testing_percentage 5"  # + \
-        #  " --tfhub_module
-        # 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
-        #  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"
+
 
         print("Running retrain : \n" + cmd)
         with open(export_path + "/cmd.txt", 'w') as f:  # saving command for future monitoring
@@ -169,6 +170,8 @@ class Predict:
 
         path_label_image = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["label_image.py"])
         graph_path, labels_path, cmd_path = Predict.choose_model(tensor_folder, automatic)
+        module_spec = hub.load_module_spec(URL_MODEL)
+        input_height, input_width = hub.get_expected_image_size(module_spec)
         print("Using graph " + graph_path)
         cmd = "python3 " + path_label_image + \
               " --graph=" + graph_path + \

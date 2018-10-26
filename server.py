@@ -24,13 +24,16 @@ def postForm():
     print(form)
     print(files)
 
-    user = User(form["name"], form["email"])
+    if form['Scientischeck'] == 'No':
+        user = User(form["name"], form["email"], form['comment'])
+    else:
+        user = Scientist(form["name"], form["email"], form['comment'], form['speciesCheck'])
 
     files["fileToUpload"].save("./static/tmp/" + files["fileToUpload"].filename)
 
+
     mosquito = Mosquito(user, "./static/tmp/" + files["fileToUpload"].filename)
     coords = Preprocessing.mosquito_position(mosquito.picture)
-
 
     cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture + "_crop")
     framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture + "_framed")

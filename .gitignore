@@ -9,4 +9,4 @@ google-cloud-credentials*.json
 tmp/*
 # classification/tensorflow
 **/retrain_logs/
-static/pictures/
+static/tmp/

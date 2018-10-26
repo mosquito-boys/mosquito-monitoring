@@ -4,10 +4,12 @@ from db_model.User import User
 from classification.preprocessing import Preprocessing
 import os
 import classification.command_classification as command_classification
-import zipfile
+from utilities.LRU import LRU
 
 app = Flask(__name__)
 
+LRUCache = LRU()
+LRUCache.start()
 
 @app.route("/")
 def renderHTML():
@@ -22,19 +24,21 @@ def postForm():
     print(form)
     print(files)
 
-    user = User(form["name"], form["email"])
+    if form['Scientischeck'] == 'No':
+        user = User(form["name"], form["email"], form['comment'])
+    else:
+        user = Scientist(form["name"], form["email"], form['comment'], form['speciesCheck'])
 
-    files["fileToUpload"].save("./static/pictures/" + files["fileToUpload"].filename)
+    files["fileToUpload"].save("./static/tmp/" + files["fileToUpload"].filename)
 
-    mosquito = Mosquito(user, "./static/pictures/" + files["fileToUpload"].filename)
+    mosquito = Mosquito(user, "./static/tmp/" + files["fileToUpload"].filename)
     coords = Preprocessing.mosquito_position(mosquito.picture)
-
     cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture.replace(".jpg", "_crop.jpg"))
     framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture.replace(".jpg", "_framed.jpg"))
 
     prediction = command_classification.label_automatic(cropped_pic)
     print(prediction)
-    os.remove("./static/pictures/" + files["fileToUpload"].filename)
+    os.remove("./static/tmp/" + files["fileToUpload"].filename)
 
     return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=prediction)
 

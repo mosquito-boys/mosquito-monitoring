@@ -23,7 +23,7 @@ class Mosquito:
     @property
     def species(self):
         """
-        getter and setter for attribute species
+        getter for attribute species
         :return: private attribute species
         """
         return self.__species

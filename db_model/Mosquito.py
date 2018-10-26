@@ -18,6 +18,7 @@ class Mosquito:
         self.__user = user
         self.__id_mosquito = Mosquito.__id_mosquito
         self.__picture = picture
+        self.__scientist_label = None
         Mosquito.__id_mosquito += 1
 
     @property
@@ -31,4 +32,9 @@ class Mosquito:
     @property
     def picture(self):
         return self.__picture
+
+    @setter
+    def add_label(self, scientist_label):
+        self.__scientist_label = scientist_label
+
 

@@ -8,31 +8,27 @@
 </head>
 <body>
     <div class="container">
+        {% include 'menu.html' %}
+        {% include 'header.html' %}
 
+        <div id="result_grid">
+            <div id ="result_framed">
+                <h2>Mosquito located</h2>
+                <img src="{{framed_pic}}">
+            </div>
 
-        <div id="header">
-            <h1>The mosquito monitoring project</h1>
-            <img id="centralesupelec_logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Ecole_Centrale_Supelec_logo.svg" alt="CentraleSupélec logo"/>
-            <h2>Monitor mosquito propagation and try to anticipate induced epidemics with the use of machine learning</h2>
-            <p>Developped by the <i>the mosquito-boys team</i> from the french engineering school, CentraleSupélec<br/>Victor Aubin, Marc Than Van Con and Paul Asquin</p>
+            <div id="cropped_pic">
+                <h2>Squared sub-image</h2>
+                <img src="{{cropped_pic}}">
+            </div>
+
+            <div id="prediction">
+                <h2>Species prediction</h2>
+                <li>{{ prediction[0][0] + " : " + prediction[0][1]  + "%" }}</li>
+                <li>{{ prediction[1][0] + " : " + prediction[1][1]  + "%" }}</li>
+                <li>{{ prediction[2][0] + " : " + prediction[2][1]  + "%" }}</li>
+            </div>
         </div>
-
-        <div id ="result_framed">
-            <h2>Image of the mosquito framed </h2>
-            <img src="{{framed_pic}}">
-        </div>
-
-        <div class="cropped_pic">
-            <h2>Image of the mosquito </h2>
-            <img src="{{cropped_pic}}">
-        </div>
-
-        <div class="prediction">
-            <li>{{ prediction[0][0] + " : " + prediction[0][1]  + "%" }}</li>
-            <li>{{ prediction[1][0] + " : " + prediction[1][1]  + "%" }}</li>
-            <li>{{ prediction[2][0] + " : " + prediction[2][1]  + "%" }}</li>
-        </div>
-
     </div>
 </body>
 </html>

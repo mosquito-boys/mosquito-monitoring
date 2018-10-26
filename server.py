@@ -8,6 +8,7 @@ import zipfile
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def renderHTML():
     return render_template("index.html")
@@ -28,16 +29,15 @@ def postForm():
     mosquito = Mosquito(user, "./static/pictures/" + files["fileToUpload"].filename)
     coords = Preprocessing.mosquito_position(mosquito.picture)
 
-
-    cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture + "_crop")
-    framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture + "_framed")
+    cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture.replace(".jpg", "_crop.jpg"))
+    framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture.replace(".jpg", "_framed.jpg"))
 
     prediction = command_classification.label_automatic(cropped_pic)
-    print("YOOOOOOOOOOOOOO")
     print(prediction)
     os.remove("./static/pictures/" + files["fileToUpload"].filename)
 
-    return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction = prediction)
+    return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=prediction)
+
 
 if __name__ == "__main__":
     app.run()

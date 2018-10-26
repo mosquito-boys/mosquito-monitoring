@@ -18,7 +18,7 @@ class Mosquito:
         self.__user = user
         self.__id_mosquito = Mosquito.__id_mosquito
         self.__filename = filename
-        # self.__scientist_label = None
+        self.__scientist_label = None
         Mosquito.__id_mosquito += 1
 
     @property
@@ -40,8 +40,10 @@ class Mosquito:
     def filename(self):
         return self.__filename
 
-    # @scientist_label.setter
-    # def scientist_label(self, scientist_label):
-    #     self.__scientist_label = scientist_label
+    @property
+    def scientist_label(self):
+        return self.__scientist_label
 
-
+    @scientist_label.setter
+    def scientist_label(self, scientist_label):
+        self.__scientist_label = scientist_label

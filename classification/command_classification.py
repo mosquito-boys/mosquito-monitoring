@@ -5,6 +5,9 @@ import threading as th
 import subprocess
 import glob
 
+# Deactivation of Wwrning messages on compiled version
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
 IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset"])
 
@@ -40,7 +43,8 @@ class Retrain(th.Thread):
               " --validation_batch_size=-1" + \
               " --how_many_training_steps 4000" + \
               " --summaries_dir retrain_logs/" + \
-              " --train_maximum True"  # + \
+              " --train_maximum True" + \
+              " --tfhub_module https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
         # " --validation_percentage 5" + \
         # " --testing_percentage 5"  # + \
         #  " --tfhub_module
@@ -111,22 +115,26 @@ class Predict:
     """
 
     @staticmethod
-    def get_models(tensor_folder):
+    def get_models(tensor_folder, automatic=True):
         """
         Get the models files paths
         :param tensor_folder:
         :return: graphs_path, labels_path, cmds_path
         """
-        print(tensor_folder)
+        if not automatic:
+            print(tensor_folder)
+        # getting graphs path and processed to alphabetical sort
         graphs_path = glob.glob(tensor_folder + "/*/*.db")
+        graphs_path.sort()
         cmds_path = []
         labels_path = []
         for graph in graphs_path:
             labels_path.append("/".join(graph.split("/")[:-1] + ["labels.txt"]))
             cmds_path.append("/".join(graph.split("/")[:-1] + ["cmd.txt"]))
-        print(graphs_path)
-        print(labels_path)
-        print(cmds_path)
+        if not automatic:
+            print(graphs_path)
+            print(labels_path)
+            print(cmds_path)
         return graphs_path, labels_path, cmds_path
 
     @staticmethod
@@ -161,19 +169,24 @@ class Predict:
 
         path_label_image = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["label_image.py"])
         graph_path, labels_path, cmd_path = Predict.choose_model(tensor_folder, automatic)
+        print("Using graph " + graph_path)
         cmd = "python3 " + path_label_image + \
               " --graph=" + graph_path + \
               " --labels " + labels_path + \
               " --input_layer=Placeholder" + \
               " --output_layer=final_result" + \
-              " --image " + image_path
-        print(cmd)
+              " --image " + image_path + \
+              " --input_height 224 " + \
+              " --input_width 224 "
+
+        if not automatic:
+            print(cmd)
         p = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True)
         out, err = p.communicate()
         result = [label.split(" ") for label in out.decode('utf-8').split("\n")[:-1]]
         clean_result = []
         for line in result:
-            clean_result.append([line[0], str(round(float(line[1])*100, 2))])
+            clean_result.append([line[0], str(round(float(line[1]) * 100, 2))])
         return clean_result
 
 

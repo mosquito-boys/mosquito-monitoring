@@ -29,6 +29,22 @@ pip3 install -r requirements.txt
 FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
 ```
 
+## Label a mosquito
+Import the mosquito classification module
+```
+import classification.command_classification as command_classification
+```
+
+Request the labelling
+```
+command_classification.label_automatic(path_img)
+```
+
+Exemple of return
+```
+[['aedes', '0.8780854'], ['culex', '0.11636846'], ['anopheles', '0.0055461014']]
+```
+
 ## Additionnal commands
 
 Remove the database (useful for dev purpose)

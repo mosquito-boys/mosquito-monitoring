@@ -1,7 +1,7 @@
 from utilities.Errors import EnvError
 import os
 
-if os.exists(".env"):
+if os.path.exists(".env"):
     try:
         with open('.env') as f:
             env_arr = f.readlines()

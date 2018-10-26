@@ -53,7 +53,7 @@ class LRU(Thread):
 
         self.__cache_dict.pop(min(self.__cache_dict.keys()))
 
-        if os.exists(LRU.__cache_folder_location + file_to_remove):
+        if os.path.exists(LRU.__cache_folder_location + file_to_remove):
             os.remove(LRU.__cache_folder_location + file_to_remove)
             print("removed", file_to_remove, "from cache")
 

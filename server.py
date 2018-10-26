@@ -52,9 +52,9 @@ def postForm():
     best_prediction = 0
     for species in predictions:
         if float(species[1]) > best_prediction:
-            label = species[0]
+            predicted_label = species[0]
 
-    mosquito.label = label
+    mosquito.label = predicted_label
 
 
 

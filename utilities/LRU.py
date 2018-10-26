@@ -1,3 +1,5 @@
+from time import sleep
+
 import os
 from threading import Thread
 
@@ -30,7 +32,8 @@ class LRU(Thread):
         """
         watch the cache folder and update __cache_dict according to it
         """
-        cache_content = os.listdir(LRU.__cache_folder_location)
+        # ignore hidden files
+        cache_content = [f for f in os.listdir(LRU.__cache_folder_location) if not f.startswith('.')]
 
         current_files = self.__cache_dict.values()
 
@@ -49,14 +52,14 @@ class LRU(Thread):
         file_to_remove = self.__cache_dict[min(self.__cache_dict.keys())]
 
         self.__cache_dict.pop(min(self.__cache_dict.keys()))
-        try:
+
+        if os.exists(LRU.__cache_folder_location + file_to_remove):
             os.remove(LRU.__cache_folder_location + file_to_remove)
             print("removed", file_to_remove, "from cache")
-        except FileExistsError:
-            pass
 
     def run(self):
         while True:
+            sleep(1) # to save some CPU power
             self.__update_cache_arr()
             while len(self.__cache_dict) > LRU.__maximum_length:
                 self.__remove_least_recent_file()

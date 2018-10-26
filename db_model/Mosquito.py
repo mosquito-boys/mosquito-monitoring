@@ -9,29 +9,36 @@ class Mosquito:
 
     __id_mosquito = 0
 
-    def __init__(self, user, picture):
+    def __init__(self, user, filename):
         """
         Class constructor
         :param user (User): the User who uploaded this mosquito
         """
-        self.__species = None
+        self.__label = None
         self.__user = user
         self.__id_mosquito = Mosquito.__id_mosquito
-        self.__picture = picture
-        self.__scientist_label = None
+        self.__filename = filename
+        # self.__scientist_label = None
         Mosquito.__id_mosquito += 1
 
     @property
-    def species(self):
+    def label(self):
         """
-        getter for attribute species
+        getter for attribute label
         :return: private attribute species
         """
-        return self.__species
+        return self.__label
+
+    @label.setter
+    def label(self, label):
+        """
+        setter for attribute label
+        """
+        self.__label = label
 
     @property
-    def picture(self):
-        return self.__picture
+    def filename(self):
+        return self.__filename
 
     # @scientist_label.setter
     # def scientist_label(self, scientist_label):

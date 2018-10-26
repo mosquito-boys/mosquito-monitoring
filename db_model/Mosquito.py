@@ -33,8 +33,8 @@ class Mosquito:
     def picture(self):
         return self.__picture
 
-    @setter
-    def add_label(self, scientist_label):
-        self.__scientist_label = scientist_label
+    # @scientist_label.setter
+    # def scientist_label(self, scientist_label):
+    #     self.__scientist_label = scientist_label
 
 

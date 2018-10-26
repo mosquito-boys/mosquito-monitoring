@@ -33,7 +33,9 @@ class LRU(Thread):
         watch the cache folder and update __cache_dict according to it
         """
         # ignore hidden files
-        cache_content = [f for f in os.listdir(LRU.__cache_folder_location) if not f.startswith('.')]
+        cache_content = []
+        if os.path.exists(LRU.__cache_folder_location):
+            cache_content = [f for f in os.listdir(LRU.__cache_folder_location) if not f.startswith('.')]
 
         current_files = self.__cache_dict.values()
 

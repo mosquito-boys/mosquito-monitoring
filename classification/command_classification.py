@@ -171,7 +171,10 @@ class Predict:
         p = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True)
         out, err = p.communicate()
         result = [label.split(" ") for label in out.decode('utf-8').split("\n")[:-1]]
-        return result
+        clean_result = []
+        for line in result:
+            clean_result.append([line[0], str(round(float(line[1])*100, 2))])
+        return clean_result
 
 
 def train_and_monitor():
@@ -199,6 +202,7 @@ def label_automatic(path_image):
     """
     Return the probabilities of the labels for a given image in path
     :param path_image:
-    :return:
+    :return: prediction with label name and percent of confidence per line
     """
-    print(Predict.label_image(path_image, TENSOR_FOLDER))
+    prediction = Predict.label_image(path_image, TENSOR_FOLDER, automatic=True)
+    return prediction

@@ -55,3 +55,21 @@ h2
     margin-top:10px;
     margin-bottom:10px;
 }
+
+.cropped_pic
+{
+    display: inline
+    float: right;
+}
+
+.prediction
+{
+    display: inline;
+    float: left;
+}
+
+.prediction li {
+
+    font-size: large;
+    font-style : bold;
+}

@@ -33,6 +33,7 @@ def postForm():
     framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture + "_framed")
 
     prediction = command_classification.label_automatic(cropped_pic)
+    print("YOOOOOOOOOOOOOO")
     print(prediction)
     os.remove("./static/pictures/" + files["fileToUpload"].filename)
 

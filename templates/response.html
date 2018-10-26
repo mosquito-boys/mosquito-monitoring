@@ -22,13 +22,15 @@
             <img src="{{framed_pic}}">
         </div>
 
-        <div>
+        <div class="cropped_pic">
             <h2>Image of the mosquito </h2>
             <img src="{{cropped_pic}}">
         </div>
 
-        <div>
-            <li>{{ prediction[0][0] + prediction[0][1]  + "%" }}</li>
+        <div class="prediction">
+            <li>{{ prediction[0][0] + " : " + prediction[0][1]  + "%" }}</li>
+            <li>{{ prediction[1][0] + " : " + prediction[1][1]  + "%" }}</li>
+            <li>{{ prediction[2][0] + " : " + prediction[2][1]  + "%" }}</li>
         </div>
 
     </div>

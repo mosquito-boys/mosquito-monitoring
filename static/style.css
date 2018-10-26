@@ -44,10 +44,14 @@ h2
 	margin: 1px;
 	padding-left: 5px;
 	padding-right: 5px;
-	/*border-radius: 5px;*/
 
 }
 
 .menu .icon {
     display: none;
+}
+
+.btn-submit {
+    margin-top:10px;
+    margin-bottom:10px;
 }

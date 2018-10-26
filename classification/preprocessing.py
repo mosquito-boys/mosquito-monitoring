@@ -3,10 +3,8 @@ import requests
 import base64
 import cv2
 from utilities import Errors
-from utilities.EnvReader import EnvReader
+from utilities.EnvReader import get_api_key
 from utilities.Errors import APIQuotaExceeded
-
-EnvReader = EnvReader()
 
 
 class Preprocessing:
@@ -14,7 +12,7 @@ class Preprocessing:
     Contains methods to target the mosquito in a picture and  crop the picture accordingly
     """
 
-    __API_KEY = EnvReader.get_api_key()
+    __API_KEY = get_api_key()
 
     @staticmethod
     def mosquito_position(image_path):

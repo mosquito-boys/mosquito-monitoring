@@ -1,30 +1,22 @@
 from utilities.Errors import EnvError
+import os
+
+try:
+    with open('.env') as f:
+        env_arr = f.readlines()
+
+    for couple in env_arr:
+        os.environ[couple.split("=")[0].strip()] = couple.split("=")[1].strip()
+
+except Exception:
+    raise EnvError()
 
 
-class EnvReader:
+def get_api_key():
     """
-    Access the environment variables
+    :return: Google API KEY
     """
-    def __init__(self):
-        try:
-            with open('.env') as f:
-                env_arr = f.readlines()
-
-            env_dict = {}
-
-            for couple in env_arr:
-                env_dict[couple.split("=")[0].strip()] = couple.split("=")[1].strip()
-
-            self.__env_dict = env_dict
-
-        except Exception:
-            raise EnvError()
-
-    def get_api_key(self):
-        """
-        :return: Google API KEY
-        """
-        try:
-            return self.__env_dict["GOOGLE_APPLICATION_CREDENTIALS"]
-        except Exception:
-            raise EnvError()
+    try:
+        return os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    except Exception:
+        raise EnvError()

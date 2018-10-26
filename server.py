@@ -31,7 +31,9 @@ def postForm():
 
     cropped_pic = Preprocessing.save_crop_img(coords, mosquito.picture, mosquito.picture + "_crop")
     framed_pic = Preprocessing.save_framed_img(coords, mosquito.picture, mosquito.picture + "_framed")
-    prediction = command_classification.label_automatic(framed_pic)
+
+    prediction = command_classification.label_automatic(cropped_pic)
+    print(prediction)
     os.remove("./static/pictures/" + files["fileToUpload"].filename)
 
     return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction = prediction)

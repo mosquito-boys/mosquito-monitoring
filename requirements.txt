@@ -1,8 +1,8 @@
+numpy==1.14.1
 Flask==1.0.2
-gunicorn
-google-cloud-vision
-environs
+requests==2.18.4
 tensorflow
-tensorflow-hub
+tensorflow_hub==0.1.1
 tensorboard
-opencv-contrib-python
+opencv_contrib_python==3.4.3.18
+gunicorn

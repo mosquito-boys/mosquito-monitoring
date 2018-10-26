@@ -2,19 +2,19 @@
 import requests
 import base64
 import cv2
-import os
 from utilities import Errors
+from utilities.EnvReader import EnvReader
+from utilities.Errors import APIQuotaExceeded
 
-from environs import Env
-
-env = Env()
-env.read_env()  # read .env file, if it exists
+EnvReader = EnvReader()
 
 
 class Preprocessing:
     """
     Contains methods to target the mosquito in a picture and  crop the picture accordingly
     """
+
+    __API_KEY = EnvReader.get_api_key()
 
     @staticmethod
     def mosquito_position(image_path):
@@ -28,7 +28,7 @@ class Preprocessing:
 
         url = "https://vision.googleapis.com/v1/images:annotate"
 
-        querystring = {"key": os.environ["GOOGLE_APPLICATION_CREDENTIALS"]}
+        querystring = {"key": Preprocessing.__API_KEY}
 
         payload = {
             "requests":
@@ -52,8 +52,12 @@ class Preprocessing:
             'cache-control': "no-cache"
         }
 
-        response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring)
-        response = response.json()["responses"][0]["localizedObjectAnnotations"]
+        response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring).json()
+
+        if "responses" not in response.keys():
+            raise APIQuotaExceeded()
+        else:
+            response = response["responses"][0]["localizedObjectAnnotations"]
 
         coords = None
         for res in response:
@@ -131,5 +135,3 @@ class Preprocessing:
         crop_img = Preprocessing.mosquito_framing(coords, path_origin)
         cv2.imwrite(saving_path, crop_img)
         return saving_path
-
-

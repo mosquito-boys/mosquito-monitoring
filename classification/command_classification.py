@@ -11,7 +11,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
 IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset"])
-URL_MODEL = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+URL_MODULE = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
 # 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
 #  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"
 
@@ -167,27 +167,52 @@ class Predict:
         :param automatic: set to False if you want to be asked to choose a model
         :return: tab with labels and probabilities
         """
-
+        # Generate path to the label_image.py script
         path_label_image = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["label_image.py"])
+
+        # Get the needed file paths :
+        # graph for the model
+        # labels for the different labels possible
+        # cmd for the training parameters
         graph_path, labels_path, cmd_path = Predict.choose_model(tensor_folder, automatic)
-        module_spec = hub.load_module_spec(URL_MODEL)
+        print("Using model " + "/".join(graph_path.split("/")[-3:-1]))
+
+        # Try to get the tfhub_module url from the cmd
+        with open(cmd_path, 'r') as cmd_file:
+            cmd_content = cmd_file.read().split(" ")
+            url_module = URL_MODULE
+            try:
+                index_url_module = cmd_content.index("--tfhub_module") + 1
+                url_module = cmd_content[index_url_module]
+            except ValueError:
+                print("Couldn't find tfhub_module url. Trying with the last retrain: " + URL_MODULE)
+
+        print(url_module)
+        # Load model specification
+        print("Connecting to internet to fetch module spec")
+        module_spec = hub.load_module_spec(url_module)
+
+        # Recover the image size expected for this model
         input_height, input_width = hub.get_expected_image_size(module_spec)
-        print("Using graph " + graph_path)
         cmd = "python3 " + path_label_image + \
               " --graph=" + graph_path + \
               " --labels " + labels_path + \
               " --input_layer=Placeholder" + \
               " --output_layer=final_result" + \
               " --image " + image_path + \
-              " --input_height 224 " + \
-              " --input_width 224 "
+              " --input_height " + str(input_height) + \
+              " --input_width " + str(input_width)
 
         if not automatic:
             print(cmd)
+
+        # Run the labelling and get the response
         p = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True)
         out, err = p.communicate()
         result = [label.split(" ") for label in out.decode('utf-8').split("\n")[:-1]]
         clean_result = []
+
+        # Changing 1 probability to 100% probability
         for line in result:
             clean_result.append([line[0], str(round(float(line[1]) * 100, 2))])
         return clean_result

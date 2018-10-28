@@ -1,21 +1,18 @@
-body
-{
+body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: "Open Sans", "Calibri", "Arial", sans-serif;
 	background-color: #ECF0F1;
-	height: 100%;
 }
 
-h1
-{
+.container {
+    width: 80%;
+}
+
+h1 {
 	text-align: center;
 }
 
-h2
-{
-	font-size: large;
-}
 
 /* Add a black background color to the top navigation */
 .menu {
@@ -64,17 +61,21 @@ h2
     text-align: center;
 }
 
+#result_grid h2 {
+    font-size: large;
+    font-weight: bold;
+}
+
 #result_framed {
     grid-column: 1;
     grid-row: 1;
 }
 
-#result_framed img{
+#result_framed img {
     width: 300px;
 }
 
-#cropped_pic
-{
+#cropped_pic {
     grid-column: 2;
     grid-row: 1;
 }
@@ -83,18 +84,58 @@ h2
     width: 200px;
 }
 
-#prediction
-{
+#prediction {
     text-align: left;
     grid-column: 3;
     grid-row: 1;
 }
 
-#prediction li {
 
-    font-size: large;
-    font-style : bold;
+#prediction li {
+    font-size: x-large;
 }
 
+.profils-grid {
+    /*for obscure reasons, this css balise
+    doesn't have any impact on the html...*/
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: auto auto auto;
+}
 
+.profil_pic {
+    width: 100px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
 
+.linkedin {
+    width: 100px;
+}
+
+.profil-1 {
+    grid-column: 1;
+}
+
+.profil-2 {
+    grid-column: 2;
+}
+
+.profil-3 {
+    grid-column: 3;
+}
+
+.profil {
+    margin: auto;
+    text-align: center;
+}
+
+.img_link {
+    transition: .3s ease;
+    color: #999999;
+}
+
+.img_link:hover {
+    -webkit-filter: grayscale(100%);
+    filter: opacity(50%);
+}

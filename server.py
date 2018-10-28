@@ -5,16 +5,21 @@ from classification.preprocessing import Preprocessing
 import os
 import classification.command_classification as command_classification
 from utilities.LRU import LRU
+import utilities.Errors as Errors
 
 app = Flask(__name__)
 
 LRUCache = LRU()
 LRUCache.start()
 
+
 @app.route("/")
 def renderHTML():
     return render_template("formular.html")
 
+@app.route("/info")
+def renderInfo():
+    return render_template("info.html")
 
 @app.route("/postform", methods=["POST"])
 def postForm():
@@ -30,7 +35,6 @@ def postForm():
     # else:
     #     user = Scientist(form["name"], form["email"], form['comment'], form['speciesCheck'])
 
-
     # extracting objects
     user = User(form["name"], form["email"], form['comment'])
     mosquito = Mosquito(user, file.filename)
@@ -41,30 +45,33 @@ def postForm():
     # saving file
     file.save(user_pic_path)
 
-    # making preproc
-    coords = Preprocessing.mosquito_position(user_pic_path)
-    cropped_pic = Preprocessing.save_crop_img(coords, user_pic_path, generated_pic_path.replace(".jpg", "_crop.jpg"))
-    framed_pic = Preprocessing.save_framed_img(coords, user_pic_path, generated_pic_path.replace(".jpg", "_framed.jpg"))
+    predictions = []
+    cropped_pic = None
+    framed_pic = None
+    try:
+        # making preproc
+        coords = Preprocessing.mosquito_position(user_pic_path)
+        cropped_pic = Preprocessing.save_crop_img(coords, user_pic_path,
+                                                  generated_pic_path.replace(".jpg", "_crop.jpg"))
+        framed_pic = Preprocessing.save_framed_img(coords, user_pic_path,
+                                                   generated_pic_path.replace(".jpg", "_framed.jpg"))
 
-    # making predictions
-    predictions = command_classification.label_automatic(cropped_pic)
-    print("predictions", predictions)
-    best_prediction = 0
-    for species in predictions:
-        if float(species[1]) > best_prediction:
-            predicted_label = species[0]
+        # making predictions
+        predictions = command_classification.label_automatic(cropped_pic)
+        print("predictions", predictions)
+        best_prediction = 0
+        for species in predictions:
+            if float(species[1]) > best_prediction:
+                predicted_label = species[0]
 
-    mosquito.label = predicted_label
-
-
+        mosquito.label = predicted_label
+    except (TypeError, Errors.InsectNotFound):
+        print("Couldn't run prediction algorithms")
 
     # BDD STORAGE !!!
     # STORE MOSQUITO
     # STORE USER
     # STORE SPECIES
-
-
-
 
     # os.remove("./static/tmp/" + file.filename)
 

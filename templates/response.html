@@ -11,8 +11,9 @@
         {% include 'menu.html' %}
         {% include 'header.html' %}
 
+        {% if prediction|length == 3 %}
         <div id="result_grid">
-            <div id ="result_framed">
+            <div id="result_framed">
                 <h2>Mosquito located</h2>
                 <img src="{{framed_pic}}">
             </div>
@@ -24,11 +25,25 @@
 
             <div id="prediction">
                 <h2>Species prediction</h2>
-                <li>{{ prediction[0][0] + " : " + prediction[0][1]  + "%" }}</li>
-                <li>{{ prediction[1][0] + " : " + prediction[1][1]  + "%" }}</li>
-                <li>{{ prediction[2][0] + " : " + prediction[2][1]  + "%" }}</li>
+                <div id="prediction-lis">
+                    <li>{{ prediction[0][0] + " : " + prediction[0][1]  + "%" }}</li>
+                    <li>{{ prediction[1][0] + " : " + prediction[1][1]  + "%" }}</li>
+                    <li>{{ prediction[2][0] + " : " + prediction[2][1]  + "%" }}</li>
+                </div>
             </div>
         </div>
+        {% else %}
+        <div id="fail_prediction">
+            <h2>No mosquito found</h2>
+            <p>We couldn't find any mosquito in this picture</p>
+            <li>Sometimes, our systems can't recognise mosquitoes. It happens.</li>
+            <li>The mosquito could be not visible enough for our current technologies.</li>
+            <li>You could have try to upload an image where there is no mosquito. Funny you.</li>
+            <li>Maybe the image is not in a JPEG format. Can you try with a .jpg file ?</li>
+            <li>Maybe this is not even an image... I am not sure we can help you with it.</li>
+        </div>
+
+        {% endif %}
     </div>
 </body>
 </html>

@@ -13,8 +13,20 @@ class User:
         self.__name = name
         self.__email = email
         self.__id_user = User.__id_user
-        self._comment = comment
+        self.__comment = comment
         User.__id_user += 1
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def email(self):
+        return self.__email
+
+    @property
+    def comment(self):
+        return self.__comment
 
     # def is_scientist(self):
     #     """

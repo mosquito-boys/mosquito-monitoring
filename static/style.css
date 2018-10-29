@@ -11,8 +11,13 @@ body {
 
 h1 {
 	text-align: center;
+	font-weight: bold;
+	margin: 40px;
 }
 
+.subtitle {
+    font-size: x-large;
+}
 
 /* Add a black background color to the top navigation */
 .menu {
@@ -48,9 +53,34 @@ h1 {
     display: none;
 }
 
+.input-file {
+    margin-bottom: 10px;
+}
+
+.label-file {
+    cursor: pointer;
+    color: #00b1ca;
+    font-weight: bold;
+}
+
+.label-file:hover {
+    color: #25a5c4;
+}
+
 .btn-submit {
     margin-top:10px;
     margin-bottom:10px;
+    padding: 16px 32px;
+    text-align: center;
+    opacity: 1;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    opacity: 0.8
 }
 
 #result_grid {
@@ -93,6 +123,10 @@ h1 {
 
 #prediction li {
     font-size: x-large;
+}
+
+#fail_prediction {
+    font-size: large;
 }
 
 .profils-grid {
@@ -139,3 +173,31 @@ h1 {
     -webkit-filter: grayscale(100%);
     filter: opacity(50%);
 }
+
+.thanks {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+#gmap_canvas {
+    overflow:hidden;
+    background:none!important;
+    height:300px;
+    width:400px;
+}
+
+.fail_logo {
+    width: 100px;
+    margin: 10px;
+}
+
+.container_fail_logo{
+    text-align: center;
+}
+
+.mosquito-card{
+    margin-top: 30px;
+
+}
+

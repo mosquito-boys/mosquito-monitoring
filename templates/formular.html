@@ -13,25 +13,54 @@
     {% include 'menu.html' %}
         <div class="container">
             {% include 'header.html' %}
+{#          FORMULAIRE #}
+            <form action="/postform" method="post" enctype="multipart/form-data">
+{#              MOSQUITO UPLOAD #}
+                <legend>Upload your mosquito</legend>
+                <input id="file" type="file" name="fileToUpload" class="input-file"/>
 
-        	<div id="form">
-{#        FORMULAIRE #} 
-        	    <form action="/postform" method="post" enctype="multipart/form-data">
+{#              MOSQUITO LOCATE #}
+                <legend>Locate your mosquito</legend>
+                <input type="hidden" id="latitude" name="latitude" value=""/>
+                <input type="hidden" id="longitude" name="longitude" value=""/>
 
-                    <legend>User Information</legend>
+                <button type="button" id="location" onclick="getLocation()">Share your location</button>
+                <label id="ask_location" for="location">Help us locate this nasty mosquito</label>
+                <br/>
+                <small id="locationHelp" class="form-text text-muted">We'll never share your location with anyone else. Your location will be REALLY useful to monitor mosquitoes propagation</small>
+                <p id="map_location"></p>
+                <script>
+                    var map = document.getElementById("map_location");
+                    var ask_map = document.getElementById("ask_location");
 
-{#            USER BASIC INFORMATIONS #}
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
+                    function getLocation() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.watchPosition(showPosition);
+                        } else {
+                            map.innerHTML = "Geolocation is not supported by this browser.";}
+                        }
 
-                    {#            IS SCIENTIST #}
+                    function showPosition(position) {
+                        ask_map.innerHTML="<p>Thanks for sharing your location !</p>";
+                        map.innerHTML="<br><iframe id='gmap_canvas' src='https://maps.google.com/maps?q=" + position.coords.latitude + "%2C%20" + position.coords.longitude + "&t=&z=9&output=embed' frameborder='0' marginheight='0' marginwidth='0'></iframe>";
+                        document.getElementById("latitude").value = position.coords.latitude;
+                        document.getElementById("longitude").value = position.coords.longitude;
+                    }
+                </script>
+
+{#              USER BASIC INFORMATIONS #}
+                <legend>Accompany your mosquito</legend>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                {#            IS SCIENTIST #}
 {#                    <div class="form-group">#}
 {#                        <label>Are you a Mosquito scientist?</label>#}
 {#                        <input type="radio" class="form-check-input" name="scientistCheck" id="isScientist" value="Yes" unchecked>#}
@@ -64,19 +93,14 @@
 {#                        </div>#}
 {#                    </fieldset>#}
 
-{#            COMMMENT #}
-                    <div class="form-group">
-                        <label for="exampleTextarea">Comment</label>
-                        <textarea class="form-control" name="comment" id="exampleTextarea" rows="3"></textarea>
-                    </div>
-
-{#            MOSQUITO UPLOAD #}
-        	        <legend>Upload your mosquito</legend>
-        	        <input type="file" name="fileToUpload" id="fileToUpload"/>
-                    <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                </form>
-        	</div>
-        </div>   
+{#              COMMMENT #}
+                <div class="form-group">
+                    <label for="exampleTextarea">Comment</label>
+                    <textarea class="form-control" name="comment" id="exampleTextarea" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+            </form>
+        </div><!-- End container -->
         <script>
 
             document.getElementById("isScientist").checked = false;

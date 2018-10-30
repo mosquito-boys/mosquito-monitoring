@@ -10,7 +10,6 @@ class User:
     def __init__(self, name="anonymous", email=None):
         self.__name = name
         self.__email = email
-        self.__id_user = User.__id_user
 
     @property
     def name(self):
@@ -19,9 +18,3 @@ class User:
     @property
     def email(self):
         return self.__email
-
-    # def is_scientist(self):
-    #     """
-    #     :return: True if the user is a scientist, false if not
-    #     """
-    #     return isinstance(self, Scientist)

@@ -5,6 +5,7 @@ from classification.preprocessing import Preprocessing
 import classification.command_classification as command_classification
 from utilities.LRU import LRU
 import utilities.Errors as Errors
+import traceback
 
 app = Flask(__name__)
 
@@ -24,29 +25,35 @@ def renderInfo():
 
 @app.route("/postform", methods=["POST"])
 def postForm():
-    # preparing variables to return in template to user
-    predictions = []
-    mosquito = None
-    cropped_pic = None
-    framed_pic = None
-    file = None
-
-    # request informations
-    form = request.form
-    latitude = form['latitude']
-    longitude = form['longitude']
-    file = request.files["fileToUpload"]
-
-    print(form)
-
     try:
+
+        # preparing variables to return in template to user
+        predictions = []
+        mosquito = None
+        cropped_pic = None
+        framed_pic = None
+        file = None
+
+        # request informations
+        try:
+            form = request.form
+            latitude = form['latitude']
+            longitude = form['longitude']
+            file = request.files["fileToUpload"]
+        except Exception:
+            raise Errors.FormError()
+
+        print(form)
+
         # extracting objects
-        user = User(form["name"], form["email"], form['comment'])
-        mosquito = Mosquito(user, file.filename, latitude, longitude)
+        user = User(form["name"], form["email"])
+        mosquito = Mosquito(user, file.filename, latitude, longitude, form["comment"])
         user_pic_path = "./dataset_to_be_validated/" + mosquito.filename
         generated_pic_path = "./static/tmp/" + mosquito.filename
+
         # saving file
         file.save(user_pic_path)
+
         # making preproc
         coords = Preprocessing.mosquito_position(user_pic_path)
         cropped_pic = Preprocessing.save_crop_img(coords, user_pic_path,
@@ -64,18 +71,33 @@ def postForm():
 
         mosquito.label = predicted_label
 
+        # BDD STORAGE
+        # user part
+        user_already_exists, id_user = is_user_in_db(user)
+        if not user_already_exists:
+            id_user = store_user(user)
+        # mosquito part
+        store_mosquito(id_user, mosquito)
 
-    except (TypeError, Errors.InsectNotFound, KeyError):
-        print("Couldn't run prediction algorithms")
 
-    # BDD STORAGE !!!
+        # STORE new USER or get existing user => id_user
 
-    # STORE new USER or get existing user => id_user
+        # STORE MOSQUITO
 
-    # STORE MOSQUITO
+        return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
+                               mosquito=mosquito)
 
-    return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
-                           mosquito=mosquito)
+    except Exception as error:
+        traceback.print_exc()
+        # we return the error page
+        if isinstance(error, Errors.InsectNotFound):
+            return render_template("errors/mosquito_not_found_error.html")
+        elif isinstance(error, Errors.FormError):
+            return render_template("errors/form_error.html")
+        elif isinstance(error, Errors.APIQuotaExceeded):
+            return render_template("errors/api_quota_exceeded.html")
+        else:
+            return render_template("errors/generic_error.html")
 
 
 if __name__ == "__main__":

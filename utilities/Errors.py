@@ -13,9 +13,19 @@ class EnvError(Exception):
     def __init__(self):
         Exception.__init__(self, "Error during environment loading. Please check your .env file")
 
+
 class APIQuotaExceeded(Exception):
     """
     The google API has exceeded quota
     """
     def __init__(self):
         Exception.__init__(self, "Google API has exceeded max quota. Please wait a minute before requesting again")
+
+
+class FormError(Exception):
+    """
+    The request form is not readable
+    """
+    def __init__(self):
+        Exception.__init__(self, "Request form has not the expected parameterss")
+

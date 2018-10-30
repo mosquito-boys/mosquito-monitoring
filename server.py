@@ -78,6 +78,9 @@ def postForm():
         mosquito.label = predicted_label
 
         # BDD STORAGE
+
+        SQLiteEngine.create_database()
+
         # user part
         user_already_exists, id_user = SQLiteEngine.is_user_in_db(user.email)
         if not user_already_exists:

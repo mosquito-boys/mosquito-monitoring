@@ -69,9 +69,10 @@ def postForm():
         print("Couldn't run prediction algorithms")
 
     # BDD STORAGE !!!
+
+    # STORE new USER or get existing user => id_user
+
     # STORE MOSQUITO
-    # STORE USER
-    # STORE SPECIES
 
     return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
                            mosquito=mosquito)

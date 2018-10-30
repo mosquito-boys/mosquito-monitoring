@@ -9,11 +9,10 @@ class User:
 
     __id_user = 0
 
-    def __init__(self, name="anonymous", email=None, comment=None):
+    def __init__(self, name="anonymous", email=None):
         self.__name = name
         self.__email = email
         self.__id_user = User.__id_user
-        self.__comment = comment
         User.__id_user += 1
 
     @property
@@ -23,10 +22,6 @@ class User:
     @property
     def email(self):
         return self.__email
-
-    @property
-    def comment(self):
-        return self.__comment
 
     # def is_scientist(self):
     #     """

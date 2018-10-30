@@ -9,7 +9,7 @@ class Mosquito:
 
     __id_mosquito = 0
 
-    def __init__(self, user, filename, latitude=None, longitude=None):
+    def __init__(self, user, filename, latitude=None, longitude=None, commment = None):
         """
         Class constructor
         :param user (User): the User who uploaded this mosquito
@@ -27,6 +27,7 @@ class Mosquito:
         else:
             self.__longitude = longitude
         self.__scientist_label = None
+        self.__comment = commment
         Mosquito.__id_mosquito += 1
 
     @property
@@ -63,6 +64,10 @@ class Mosquito:
     @property
     def scientist_label(self):
         return self.__scientist_label
+
+    @property
+    def comment(self):
+        return self.__comment
 
     @scientist_label.setter
     def scientist_label(self, scientist_label):

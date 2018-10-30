@@ -44,6 +44,16 @@ class SQLiteEngine(DBEngine):
         os.remove(SQLiteEngine.__db_name)
 
     @staticmethod
+    def is_User_in_DB(id):
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''SELECT DISTINCT id_user FROM User''')
+
+        res = cursor.fetchall()
+
+        print(res)
+
+    @staticmethod
     def get_mosquitos_by_species():
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
@@ -51,6 +61,18 @@ class SQLiteEngine(DBEngine):
 
         res = cursor.fetchall()
         print("get mosquitos", res)
+
+        connection.commit()
+        connection.close()
+
+    @staticmethod
+    def store_user(user):
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''INSERT INTO User(name, email) VALUES(user.name, user.email)''')
+
+        res = cursor.fetchall()
+        print("store user", res)
 
         connection.commit()
         connection.close()

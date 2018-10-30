@@ -7,8 +7,6 @@ class Mosquito:
         (private) user (User): the User who uploaded this mosquito
     """
 
-    __id_mosquito = 0
-
     def __init__(self, user, filename, latitude=None, longitude=None, comment = None):
         """
         Class constructor
@@ -16,7 +14,6 @@ class Mosquito:
         """
         self.__label = None
         self.__user = user
-        self.__id_mosquito = Mosquito.__id_mosquito
         self.__filename = filename
         if latitude is None or latitude == "":
             self.__latitude = None
@@ -28,7 +25,7 @@ class Mosquito:
             self.__longitude = longitude
         self.__scientist_label = None
         self.__comment = comment
-        Mosquito.__id_mosquito += 1
+
 
     @property
     def label(self):

@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 
-from db_model import SQLiteEngine
+from db_model.SQLiteEngine import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User
 from classification.preprocessing import Preprocessing
@@ -79,12 +79,13 @@ def postForm():
 
         # BDD STORAGE
         # user part
-        user_already_exists, id_user = SQLiteEngine.is_user_in_db(user)
+        user_already_exists, id_user = SQLiteEngine.is_user_in_db(user.email)
         if not user_already_exists:
-            id_user = SQLiteEngine.store_user(user)
-        # mosquito part
-            SQLiteEngine.store_mosquito(id_user, mosquito)
+            SQLiteEngine.store_user(user)
 
+        id_user = SQLiteEngine.get_user_id(user.email)
+
+        SQLiteEngine.store_mosquito(id_user, mosquito)
 
         # STORE new USER or get existing user => id_user
 

@@ -7,7 +7,6 @@ import db_model.Mosquito as m
 def create_db():
     SQLiteEngine.create_database()
 
-
 def store_user():
     user = u.User('Marc', 'MArc\@plus.com')
     SQLiteEngine.store_user(user)
@@ -23,8 +22,7 @@ def store_mosquito():
     mosquito = m.Mosquito(user, 'file', '')
     mosquito.label = 'Hello'
     print(mosquito)
-    SQLiteEngine.store_mosquito(23 ,mosquito)
-
+    SQLiteEngine.store_mosquito(23, mosquito)
 
 def drop_db():
     SQLiteEngine.drop_database()
@@ -32,7 +30,11 @@ def drop_db():
 
 def is_User_in_DB():
     email = input('enter email')
-    print(SQLiteEngine.is_User_in_DB(email))
+    print(SQLiteEngine.is_user_in_db(email))
+
+def get_user_id():
+    email = 'flo@flo.com'
+    print(SQLiteEngine.get_user_id(email))
 
 
 if __name__ == "__main__":
@@ -55,6 +57,9 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] == "--is_user":
         print("Testing is_user in DB")
         is_User_in_DB()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--user_id":
+        print("Testing get_user_id in DB")
+        get_user_id()
     else:
         if len(sys.argv) > 1 and (sys.argv[1] == "--help" or sys.argv[1] == "-h"):
             print("Didn't recognize command : " + sys.argv[1])

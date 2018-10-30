@@ -12,7 +12,6 @@
     <div class="container">
         {% include 'header.html' %}
 
-        {% if prediction|length == 3 %}
         <div id="result_grid">
             <div id="result_framed">
                 <h2>Mosquito located</h2>
@@ -43,26 +42,6 @@
             <li>Mosquito longitude: {{ mosquito.longitude }}</li>
             <li>Mosquito filename: {{ mosquito.filename }}</li>
         </div>
-        {% else %}
-        <div id="fail_prediction">
-            <h2>No mosquito found</h2>
-            <div class="container_fail_logo">
-                <img class="fail_logo" src="{{ url_for('static', filename='media/detective.svg') }}"/>
-            </div>
-            <p>We couldn't find any mosquito in this picture</p>
-            <li>Sometimes, depending on pictures, our systems are not able to recognise mosquitoes. It happens ¯\_(ツ)_/¯</li>
-            <li>The mosquito could be not visible enough for our current technologies. Can you zoom and crop, or take a closer picture ?
-                <br/>&#10145 With time, the accuracy of our systems will increase thanks to the data acquired.</li>
-            <li>You may have tried to upload an image where there is no mosquito. Funny you.</li>
-            <li>Maybe the image is not in a JPEG format. Could you try with a .jpg file ?</li>
-            <li>Maybe this is not even an image... I am not sure I can help at this point.</li>
-            <p>Anyway</p>
-        </div>
-        <div class="thanks">
-            <p>Thanks for having participate to the Mosquito Monitoring Project ! &#127881&#127881&#127881</p>
-        </div>
-
-        {% endif %}
     </div>
 </body>
 </html>

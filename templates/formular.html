@@ -17,7 +17,7 @@
             <form action="/postform" method="post" enctype="multipart/form-data">
 {#              MOSQUITO UPLOAD #}
                 <legend>Upload your mosquito</legend>
-                <input id="file" type="file" name="fileToUpload" class="input-file"/>
+                <input id="file" type="file" name="fileToUpload" class="input-file" required/>
 
 {#              MOSQUITO LOCATE #}
                 <legend>Locate your mosquito</legend>
@@ -52,46 +52,14 @@
                 <legend>Accompany your mosquito</legend>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
 
-                {#            IS SCIENTIST #}
-{#                    <div class="form-group">#}
-{#                        <label>Are you a Mosquito scientist?</label>#}
-{#                        <input type="radio" class="form-check-input" name="scientistCheck" id="isScientist" value="Yes" unchecked>#}
-{#                        Yes#}
-{#                        <input type="radio" class="form-check-input" name="scientistCheck" id="isNotScientist" value="No" checked>#}
-{#                        No#}
-{##}
-{#                    </div>#}
-
-{#            SPECIES INTUITION #}
-{#                    <fieldset class="form-group" id="speciesCheck" hidden>#}
-{#                        <legend>Which mosquito species is it?</legend>#}
-{#                        <div class="form-check">#}
-{#                          <label class="form-check-label">#}
-{#                            <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species1" value="Aedes" unchecked>#}
-{#                            Aedes#}
-{#                          </label>#}
-{#                        </div>#}
-{#                        <div class="form-check">#}
-{#                        <label class="form-check-label">#}
-{#                            <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species2" value="Anopheles" unchecked>#}
-{#                            Anopheles#}
-{#                          </label>#}
-{#                        </div>#}
-{#                        <div class="form-check disabled">#}
-{#                        <label class="form-check-label">#}
-{#                            <input type="radio" class="form-check-input radioSpecies" name="speciesCheck" id="Species3" value="Culex" unchecked>#}
-{#                            Culex#}
-{#                          </label>#}
-{#                        </div>#}
-{#                    </fieldset>#}
 
 {#              COMMMENT #}
                 <div class="form-group">
@@ -101,29 +69,6 @@
                 <button type="submit" class="btn btn-primary btn-submit">Submit</button>
             </form>
         </div><!-- End container -->
-        <script>
-
-            document.getElementById("isScientist").checked = false;
-
-            if (document.getElementById("isScientist").checked) {
-                enableSpeciesSelection()
-            } else {
-                disableSpeciesSelection()
-            }
-
-
-            document.getElementById("isScientist").addEventListener("change", enableSpeciesSelection);
-
-            function disableSpeciesSelection() {
-                document.getElementById("speciesCheck").hidden = true;
-            }
-
-            document.getElementById("isNotScientist").addEventListener("change", disableSpeciesSelection);
-
-            function enableSpeciesSelection() {
-                document.getElementById("speciesCheck").hidden = false;
-            }
-        </script>
     </body>
 </html>
 <script>

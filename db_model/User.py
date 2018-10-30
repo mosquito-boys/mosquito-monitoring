@@ -7,6 +7,8 @@ class User:
         (private) email (string)
     """
 
+    __id_user = 0
+
     def __init__(self, name="anonymous", email=None):
         self.__name = name
         self.__email = email
@@ -18,3 +20,6 @@ class User:
     @property
     def email(self):
         return self.__email
+
+
+

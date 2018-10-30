@@ -44,20 +44,37 @@ class SQLiteEngine(DBEngine):
         os.remove(SQLiteEngine.__db_name)
 
     @staticmethod
-    def is_User_in_DB(id):
+    def is_User_in_DB(email):
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT DISTINCT id_user FROM User''')
+        cursor.execute('''SELECT id_user FROM User WHERE email = ?''',(email,) )
 
         res = cursor.fetchall()
 
-        print(res)
+        if len(res) > 0:
+            return True, res[0][0]
+        else:
+            return False, None
+
+    @staticmethod
+    def is_Species_in_DB(name):
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''SELECT id_species FROM Species WHERE name = ?''',(name,) )
+
+        res = cursor.fetchall()
+
+        if len(res) > 0:
+            return True, res[0][0]
+        else:
+            return False, None
 
     @staticmethod
     def get_mosquitos_by_species():
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT * FROM Mosquito''')
+        cursor.execute('''SELECT * 
+                        FROM Mosquito''')
 
         res = cursor.fetchall()
         print("get mosquitos", res)
@@ -66,26 +83,76 @@ class SQLiteEngine(DBEngine):
         connection.close()
 
     @staticmethod
-    def store_user(user):
+    def get_mosquitos_species_id(name):
+        '''
+        :param name:
+        :return None:
+        '''
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''INSERT INTO User(name, email) VALUES(user.name, user.email)''')
+        cursor.execute('''SELECT id_species 
+                        FROM Species 
+                        WHERE name = ?''', (name,))
 
         res = cursor.fetchall()
-        print("store user", res)
+
+        connection.commit()
+        connection.close()
+
+        return res[0][0]
+
+    @staticmethod
+    def store_user(user):
+
+        '''
+        :param user:
+        :return None:
+        '''
+
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''INSERT INTO User(name, email) VALUES(?, ?)''', (user.name, user.email))
 
         connection.commit()
         connection.close()
 
     @staticmethod
-    def store_mosquito(mosquito):
+    def store_species(name):
+        '''
+        :param name:
+        :return None:
+        '''
+        if SQLiteEngine.is_Species_in_DB(name)[0]:
+            print('Species already stored in the DB')
+        else:
+            connection = sqlite3.connect(SQLiteEngine.__db_name)
+            cursor = connection.cursor()
+            cursor.execute('''INSERT INTO Species(name) VALUES(?)''', (name,))
+
+            connection.commit()
+            connection.close()
+
+    @staticmethod
+    def store_mosquito(id_user, mosquito):
+        '''
+        :param id_user:
+        :param mosquito:
+        :return None:
+        '''
+
+        # Retrieving the mosquito species_id
+
+        if SQLiteEngine.is_Species_in_DB(mosquito.label)[0]:
+            id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
+        else:
+            SQLiteEngine.store_species(mosquito.label)
+            id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
+
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''INSERT INTO Mosquito(id_species, id_user, latitude, longitude, filename, comment)
-        VALUES(id_species, id_user, mosquito.latitude, mosquito.longitude, mosquito.filename, mosquito.comment)''')
-
-        res = cursor.fetchall()
-        print("store mosquito", res)
+                        VALUES(?, ?, ?, ?, ?, ?)'''
+                       , (id_species, id_user, mosquito.latitude, mosquito.longitude, mosquito.filename, mosquito.comment) )
 
         connection.commit()
         connection.close()

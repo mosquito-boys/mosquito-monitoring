@@ -1,4 +1,6 @@
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template
+
+from db_model import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User
 from classification.preprocessing import Preprocessing
@@ -12,7 +14,6 @@ app = Flask(__name__)
 LRUCache = LRU()
 LRUCache.start()
 
-
 @app.route("/")
 def renderHTML():
     return render_template("formular.html")
@@ -21,6 +22,11 @@ def renderHTML():
 @app.route("/info")
 def renderInfo():
     return render_template("info.html")
+
+
+@app.route("/map")
+def renderMap():
+    return render_template("map.html")
 
 
 @app.route("/postform", methods=["POST"])
@@ -73,11 +79,11 @@ def postForm():
 
         # BDD STORAGE
         # user part
-        user_already_exists, id_user = is_user_in_db(user)
+        user_already_exists, id_user = SQLiteEngine.is_user_in_db(user)
         if not user_already_exists:
-            id_user = store_user(user)
+            id_user = SQLiteEngine.store_user(user)
         # mosquito part
-        store_mosquito(id_user, mosquito)
+            SQLiteEngine.store_mosquito(id_user, mosquito)
 
 
         # STORE new USER or get existing user => id_user

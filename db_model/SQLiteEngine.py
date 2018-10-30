@@ -44,7 +44,7 @@ class SQLiteEngine(DBEngine):
         os.remove(SQLiteEngine.__db_name)
 
     @staticmethod
-    def is_User_in_DB(email):
+    def is_user_in_db(email):
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''SELECT id_user FROM User WHERE email = ?''',(email,) )
@@ -57,7 +57,7 @@ class SQLiteEngine(DBEngine):
             return False, None
 
     @staticmethod
-    def is_Species_in_DB(name):
+    def is_species_in_db(name):
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''SELECT id_species FROM Species WHERE name = ?''',(name,) )
@@ -77,10 +77,9 @@ class SQLiteEngine(DBEngine):
                         FROM Mosquito''')
 
         res = cursor.fetchall()
-        print("get mosquitos", res)
 
-        connection.commit()
-        connection.close()
+        return res[0][0]
+
 
     @staticmethod
     def get_mosquitos_species_id(name):
@@ -96,10 +95,30 @@ class SQLiteEngine(DBEngine):
 
         res = cursor.fetchall()
 
+        print(res[0][0])
+
         connection.commit()
         connection.close()
 
+    @staticmethod
+    def get_user_id(email):
+        '''
+        :param name:
+        :return None:
+        '''
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''SELECT id_user FROM User WHERE email = ? ''', (email, ))
+
+        res = cursor.fetchall()
+
+        print(res)
         return res[0][0]
+
+        #connection.commit()
+        #connection.close()
+
+
 
     @staticmethod
     def store_user(user):
@@ -122,7 +141,7 @@ class SQLiteEngine(DBEngine):
         :param name:
         :return None:
         '''
-        if SQLiteEngine.is_Species_in_DB(name)[0]:
+        if SQLiteEngine.is_species_in_db(name)[0]:
             print('Species already stored in the DB')
         else:
             connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -142,7 +161,7 @@ class SQLiteEngine(DBEngine):
 
         # Retrieving the mosquito species_id
 
-        if SQLiteEngine.is_Species_in_DB(mosquito.label)[0]:
+        if SQLiteEngine.is_species_in_db(mosquito.label)[0]:
             id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
         else:
             SQLiteEngine.store_species(mosquito.label)

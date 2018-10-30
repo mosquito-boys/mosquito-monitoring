@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template
 
 from db_model.SQLiteEngine import SQLiteEngine
@@ -58,6 +60,8 @@ def postForm():
         generated_pic_path = "./static/tmp/" + mosquito.filename
 
         # saving file
+        if not  os.path.exists("./dataset_to_be_validated"):
+            os.makedirs("./dataset_to_be_validated")
         file.save(user_pic_path)
 
         # making preproc

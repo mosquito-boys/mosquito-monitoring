@@ -1,4 +1,4 @@
-# init_project.py by Mosquito boys project
+# preprocess_dataset.py by Mosquito boys project
 
 import glob
 import os

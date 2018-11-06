@@ -16,6 +16,7 @@ app = Flask(__name__)
 LRUCache = LRU()
 LRUCache.start()
 
+
 @app.route("/")
 def renderHTML():
     return render_template("pages/formular.html")
@@ -57,12 +58,16 @@ def postForm():
         user = User(form["name"], form["email"])
         mosquito = Mosquito(user, file.filename, latitude, longitude, form["comment"])
         user_pic_path = "./dataset_to_be_validated/" + mosquito.filename
-        generated_pic_path = "./static/tmp/" + mosquito.filename
+        safe_name = ''.join(c for c in mosquito.filename if c not in '(){}<>')
+        generated_pic_path = "./static/tmp/" + safe_name
 
         # saving file
-        if not  os.path.exists("./dataset_to_be_validated"):
+        if not os.path.exists("./dataset_to_be_validated"):
             os.makedirs("./dataset_to_be_validated")
         file.save(user_pic_path)
+
+        print(user_pic_path)
+        print(generated_pic_path)
 
         # making preproc
         coords = Preprocessing.mosquito_position(user_pic_path)
@@ -98,7 +103,8 @@ def postForm():
 
         # STORE MOSQUITO
 
-        return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
+        return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic,
+                               prediction=predictions,
                                mosquito=mosquito)
 
     except Exception as error:

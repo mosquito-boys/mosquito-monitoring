@@ -2,29 +2,57 @@
 <html>
     {% include 'components/head_template.html' %}
 
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
     <body>
 
-        {% include 'components/menu.html' %}
 
-        <div class="container main">
 
-            {% include 'components/header.html' %}
-        <div id="map"></div>
+        <div id="map" class="row"></div>
 
         <script>
           function initMap() {
-            var myLatLng = {lat: -25.363, lng: 131.044};
+            var coords = [{lat: -25.363, lng: 131.044}, {lat: -25.363, lng: 130.044}];
+
+            var averageLat = 0;
+            var averageLng = 0;
+
+            coords.forEach(function (coord) {
+                averageLat += coord.lat;
+                averageLng += coord.lng;
+            });
+            averageLat /= coords.length;
+            averageLng /= coords.length;
+
+
+
 
             var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 4,
-              center: myLatLng
+                zoom: 4,
+                center: {lat: averageLat, lng: averageLng}
             });
 
-            var marker = new google.maps.Marker({
-              position: myLatLng,
-              map: map,
-              title: 'Hello World!'
+            coords.forEach(function (coord) {
+                var marker = new google.maps.Marker({
+                    position: coord,
+                    map: map,
+                    label: 'species 1',
+                    title: "user1"
+                });
             });
+
+
           }
         </script>
 

@@ -5,6 +5,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    env_file: .env
     volumes:
       - .:/usr/src/app
     ports:

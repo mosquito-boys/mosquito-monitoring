@@ -21,3 +21,9 @@ def get_api_key():
         return os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
     except Exception:
         raise EnvError()
+
+def get_port_number():
+    try:
+        return os.environ["PORT"]
+    except Exception:
+        return None

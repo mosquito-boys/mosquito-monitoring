@@ -2,7 +2,7 @@
 Identify mosquito species and collect data to anticipate epidemics propagation
 for a CentraleSupelec project
 
-Deployment : [https://mosquito-monitor.herokuapp.com/](https://mosquito-monitor.herokuapp.com/)
+Deployed app : [https://mosquito-monitor.herokuapp.com/](https://mosquito-monitor.herokuapp.com/)
 
 # Introduction
 ## Project purpose
@@ -23,23 +23,34 @@ You have then 2 choices:
 - The second one is to have Docker (version 1.13.0+ and above) installed and running on your OS
 
 
-## Installation (without docker)
+## Installation (only if you are not using Docker)
+
+NB: You need to have python 3.6 installed and **not** 3.7 installed on your machine.
 
 ```
 pip3 install -r requirements.txt
 ```
-NB: You need to have python 3.6 installed and **not** 3.7 installed on your machine.
+
+You may have to install some additional libraries for opencv.
 
 ## Start server
 
-### Without Docker
-```
-FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
-```
 ### With Docker
 ```
 docker-compose up
 ```
+
+### Without Docker
+Debug mode
+```
+FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
+```
+Normal mode
+```
+python3 server.py
+```
+
+The server should be listening to port 5000
 
 ## Label a mosquito
 Import the mosquito classification module
@@ -59,7 +70,7 @@ Exemple of return
 
 ## Additionnal commands
 
-Remove the database (useful for dev purpose)
+Remove the database (useful for development purpose)
 
 ```
 rm ./sqlite.db

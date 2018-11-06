@@ -1,8 +1,8 @@
 numpy==1.14.1
 Flask==1.0.2
-requests==2.18.4
-tensorflow
+requests>=2.20.0
+tensorflow==1.8.0
 tensorflow_hub==0.1.1
-tensorboard
+tensorboard==1.8.0
 opencv_contrib_python==3.4.3.18
-gunicorn
+gunicorn==19.9.0

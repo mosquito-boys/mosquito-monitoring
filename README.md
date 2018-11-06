@@ -23,11 +23,12 @@ You have then 2 choices:
 - The second one is to have Docker (version 1.13.0+ and above) installed and running on your OS
 
 
-# Installation
+## Installation (without docker)
 
 ```
 pip3 install -r requirements.txt
 ```
+NB: You need to have python 3.6 installed and **not** 3.7 installed on your machine.
 
 ## Start server
 
@@ -35,7 +36,6 @@ pip3 install -r requirements.txt
 ```
 FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
 ```
-
 ### With Docker
 ```
 docker-compose up

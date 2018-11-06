@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    {% include 'components/head_template.html' %}
+
+    <body>
+
+        {% include 'components/menu.html' %}
+
+        <div class="container main">
+
+            {% include 'components/header.html' %}
+
+            <h2>The team</h2>
+
+            <div class="profils-grid" style="display: grid; width:80%; margin: auto;">
+                <div class="profil profil-1">
+                    <h3>Paul Asquin</h3>
+                    <img class="profil_pic" src="{{ url_for('static', filename='media/paul_asquin.jpg') }}">
+                    <br/>
+                    <p>A cool guy</p>
+                    <a href="https://www.linkedin.com/in/paulasquin">
+                        <img class="img_link linkedin" src="{{ url_for('static', filename='media/linkedin.svg') }}"/>
+                    </a>
+                </div>
+                <div class="profil profil-2">
+                    <h3>Marc Than Van Con</h3>
+                    <img class="profil_pic" src="{{ url_for('static', filename='media/marc_than.jpg') }}">
+                    <br/>
+                    <p>A cool guy</p>
+                    <a href="https://www.linkedin.com/in/marc-than-van-con-baa167105/">
+                        <img class="img_link linkedin" src="{{ url_for('static', filename='media/linkedin.svg') }}"/>
+                    </a>
+                </div>
+                <div class="profil profil-3">
+                    <h3>Victor Aubin</h3>
+                    <img class="profil_pic" src="{{ url_for('static', filename='media/victor_aubin.jpg') }}">
+                    <br/>
+                    <p>A cool guy</p>
+                    <a href="https://www.linkedin.com/in/victor-aubin-b100b3a8/">
+                        <img class="img_link linkedin" src="{{ url_for('static', filename='media/linkedin.svg') }}"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

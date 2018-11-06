@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    {% include 'components/head_template.html' %}
+
+    <body>
+
+        {% include 'components/menu.html' %}
+
+        <div class="container main">
+
+            {% include 'components/header.html' %}
+        <div id="map"></div>
+
+        <script>
+          function initMap() {
+            var myLatLng = {lat: -25.363, lng: 131.044};
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 4,
+              center: myLatLng
+            });
+
+            var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              title: 'Hello World!'
+            });
+          }
+        </script>
+
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC22X19gu0Om3YhYaI3GjYU2aM4BrKOW0M&callback=initMap">
+        </script>
+    </div>
+
+  </body>
+</html>

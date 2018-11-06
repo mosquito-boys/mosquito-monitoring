@@ -18,17 +18,17 @@ LRUCache.start()
 
 @app.route("/")
 def renderHTML():
-    return render_template("formular.html")
+    return render_template("pages/formular.html")
 
 
 @app.route("/info")
 def renderInfo():
-    return render_template("info.html")
+    return render_template("pages/info.html")
 
 
 @app.route("/map")
 def renderMap():
-    return render_template("map.html")
+    return render_template("pages/map.html")
 
 
 @app.route("/postform", methods=["POST"])
@@ -98,21 +98,21 @@ def postForm():
 
         # STORE MOSQUITO
 
-        return render_template("response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
+        return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
                                mosquito=mosquito)
 
     except Exception as error:
         traceback.print_exc()
         # we return the error page
         if isinstance(error, Errors.InsectNotFound):
-            return render_template("errors/mosquito_not_found_error.html")
+            return render_template("pages/errors/mosquito_not_found_error.html")
         elif isinstance(error, Errors.FormError):
-            return render_template("errors/form_error.html")
+            return render_template("pages/errors/form_error.html")
         elif isinstance(error, Errors.APIQuotaExceeded):
-            return render_template("errors/api_quota_exceeded.html")
+            return render_template("pages/errors/api_quota_exceeded.html")
         else:
-            return render_template("errors/generic_error.html")
+            return render_template("pages/errors/generic_error.html")
 
 
 if __name__ == "__main__":
-    app.run(host = '0.0.0.0', port = 80, debug = False)
+    app.run(host='0.0.0.0', port=80, debug=False)

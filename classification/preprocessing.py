@@ -55,7 +55,10 @@ class Preprocessing:
         if "responses" not in response.keys():
             raise APIQuotaExceeded()
         else:
-            response = response["responses"][0]["localizedObjectAnnotations"]
+            try:
+                response = response["responses"][0]["localizedObjectAnnotations"]
+            except Exception:
+                raise Errors.InsectNotFound
 
         coords = None
         for res in response:

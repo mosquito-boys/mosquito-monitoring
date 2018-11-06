@@ -201,3 +201,8 @@ h1 {
 
 }
 
+.slide {
+    display: inline-block;
+    margin-top: 10px;
+    width: 500px;
+}

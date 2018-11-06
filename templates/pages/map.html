@@ -8,58 +8,122 @@
       #map {
         height: 100%;
       }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+      #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 3px solid #000;
       }
+      #legend h3 {
+        margin-top: 0;
+      }
+      #legend img {
+        vertical-align: middle;
+      }
+
+      {#}#}
     </style>
     <body>
 
+        {% include 'components/menu.html' %}
 
+        <div class="container main">
 
-        <div id="map" class="row"></div>
-
-        <script>
-          function initMap() {
-            var coords = [{lat: -25.363, lng: 131.044}, {lat: -25.363, lng: 130.044}];
-
-            var averageLat = 0;
-            var averageLng = 0;
-
-            coords.forEach(function (coord) {
-                averageLat += coord.lat;
-                averageLng += coord.lng;
-            });
-            averageLat /= coords.length;
-            averageLng /= coords.length;
+            {% include 'components/header.html' %}
 
 
 
+            <div id="map" style="width:100%;height:400px;"></div>
+            <div id="legend"><h3>Legend</h3></div>
 
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 4,
-                center: {lat: averageLat, lng: averageLng}
-            });
 
-            coords.forEach(function (coord) {
-                var marker = new google.maps.Marker({
-                    position: coord,
-                    map: map,
-                    label: 'species 1',
-                    title: "user1"
+
+            <script>
+
+                {#const dots = ["blue", "yellow", "red", "green", "purple"];#}
+
+                var iconBase = "http://maps.google.com/mapfiles/ms/icons/";
+                var icons = {
+                  aedes: {
+                    name: 'aedes',
+                    icon: iconBase + 'blue-dot.png'
+                  },
+                  culex: {
+                    name: 'culex',
+                    icon: iconBase + 'red-dot.png'
+                  },
+                  anopheles: {
+                    name: 'anopheles',
+                    icon: iconBase + 'yellow-dot.png'
+                  }
+                };
+
+
+
+                function initMap() {
+                    let coordinates = {{ mosquitos | safe }};
+
+                    console.log(coordinates);
+
+                    coordinates.filter(elt => elt.lat && elt.lng && elt.mosquito_species);
+
+
+                    let averageLat = 0;
+                    let averageLng = 0;
+
+                    coordinates.forEach((coord) => {
+                        averageLat += coord.lat;
+                        averageLng += coord.lng;
                 });
-            });
+
+                averageLat /= coordinates.length;
+                averageLng /= coordinates.length;
 
 
-          }
-        </script>
 
-        <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC22X19gu0Om3YhYaI3GjYU2aM4BrKOW0M&callback=initMap">
-        </script>
-    </div>
 
-  </body>
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 4,
+                    center: {lat: averageLat, lng: averageLng}
+                });
+
+                coordinates.forEach((coord) => {
+                    const marker = new google.maps.Marker({
+                        position: coord,
+                        map: map,
+                        label: coord.user_name,
+                        {#title: coord.user_name,#}
+                        icon: icons[coord.mosquito_species].icon
+                    });
+                });
+
+
+
+
+
+                var legend = document.getElementById('legend');
+                for (var key in icons) {
+                  var type = icons[key];
+                  var name = type.name;
+                  var icon = type.icon;
+                  var div = document.createElement('div');
+                  div.innerHTML = '<img src="' + icon + '"> ' + name;
+                  legend.appendChild(div);
+                }
+
+                map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+
+
+
+              }
+            </script>
+
+            <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC22X19gu0Om3YhYaI3GjYU2aM4BrKOW0M&callback=initMap">
+            </script>
+
+        </div>
+
+    </body>
 </html>

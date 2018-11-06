@@ -16,6 +16,9 @@ app = Flask(__name__)
 LRUCache = LRU()
 LRUCache.start()
 
+SQLiteEngine.create_database()
+
+
 @app.route("/")
 def renderHTML():
     return render_template("pages/formular.html")
@@ -28,7 +31,9 @@ def renderInfo():
 
 @app.route("/map")
 def renderMap():
-    return render_template("pages/map.html")
+    mosquitos = SQLiteEngine.get_all_mosquitos()
+    print("mosquitos in DB", mosquitos)
+    return render_template("pages/map.html", mosquitos=mosquitos)
 
 
 @app.route("/postform", methods=["POST"])
@@ -74,6 +79,7 @@ def postForm():
         predictions = command_classification.label_automatic(cropped_pic)
         print("predictions", predictions)
         best_prediction = 0
+        predicted_label = None
         for species in predictions:
             if float(species[1]) > best_prediction:
                 best_prediction = float(species[1])
@@ -81,22 +87,14 @@ def postForm():
 
         mosquito.label = predicted_label
 
-        # BDD STORAGE
-
-        SQLiteEngine.create_database()
-
         # user part
         user_already_exists, id_user = SQLiteEngine.is_user_in_db(user.email)
         if not user_already_exists:
             SQLiteEngine.store_user(user)
 
         id_user = SQLiteEngine.get_user_id(user.email)
-
+        print("store_mosquito")
         SQLiteEngine.store_mosquito(id_user, mosquito)
-
-        # STORE new USER or get existing user => id_user
-
-        # STORE MOSQUITO
 
         return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic, prediction=predictions,
                                mosquito=mosquito)

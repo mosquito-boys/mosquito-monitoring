@@ -20,22 +20,27 @@
                 <input id="file" type="file" name="fileToUpload" class="input-file" required/>
 
 {#              MOSQUITO LOCATE #}
-                <legend>Locate your mosquito</legend>
-                <input type="hidden" id="latitude" name="latitude" value=""/>
-                <input type="hidden" id="longitude" name="longitude" value=""/>
 
+                <legend>Locate your mosquito</legend>
+                <label id="ask_location" for="location">Help us locate this nasty mosquito by sharing your location</label>
                 <button type="button" id="location" onclick="getLocation()">Share your location</button>
-                <label id="ask_location" for="location">Help us locate this nasty mosquito</label>
+
+                <label>Or enter manually your coordinates</label>
+                <br/> Latitude <input id="latitude" name="latitude" value=""/>
+                <br/> Longitude <input id="longitude" name="longitude" value=""/>
+
                 <br/>
                 <small id="locationHelp" class="form-text text-muted">We'll never share your location with anyone else. Your location will be REALLY useful to monitor mosquitoes propagation</small>
                 <p id="map_location"></p>
+
                 <script>
                     var map = document.getElementById("map_location");
                     var ask_map = document.getElementById("ask_location");
 
                     function getLocation() {
                         if (navigator.geolocation) {
-                            navigator.geolocation.watchPosition(showPosition);
+                            navigator.geolocation.getCurrentPosition(showPosition);
+                            {#navigator.geolocation.watchPosition(showPosition);#}
                         } else {
                             map.innerHTML = "Geolocation is not supported by this browser.";}
                         }

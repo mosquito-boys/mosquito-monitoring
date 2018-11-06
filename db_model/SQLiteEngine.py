@@ -129,7 +129,6 @@ class SQLiteEngine(DBEngine):
         connection.commit()
         connection.close()
 
-        print(res)
         return res[0][0]
 
 
@@ -146,6 +145,7 @@ class SQLiteEngine(DBEngine):
                         , u.name as user_name
                         , m.latitude
                         , m.longitude
+                        , m.id_species
                      FROM Mosquito as m
                      LEFT JOIN Species as s on m.id_species = s.id_species
                      LEFT JOIN User as u on m.id_user = u.id_user''')
@@ -154,9 +154,20 @@ class SQLiteEngine(DBEngine):
         connection.commit()
         connection.close()
 
-        print("tuple format (id_mosquito, mosquito_species, user_name, lat, lon)" )
+        # print("tuple format (id_mosquito, mosquito_species, user_name, lat, lon)")
 
-        return res
+        dict_res = []
+        for elt in res:
+            dict_elts = {"id_mosquito": elt[0],
+                             "mosquito_species": elt[1],
+                             "user_name": elt[2],
+                             "lat": elt[3],
+                             "lng": elt[4],
+                             "id_species": elt[5]}
+            filtered_dict_elts = dict(filter(lambda item: item[1] is not None, dict_elts.items()))
+            dict_res.append(filtered_dict_elts)
+
+        return dict_res
 
 
     @staticmethod
@@ -207,6 +218,7 @@ class SQLiteEngine(DBEngine):
             SQLiteEngine.store_species(mosquito.label)
             id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
 
+        print("id_species", id_species)
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''INSERT INTO Mosquito(id_species, id_user, latitude, longitude, filename, comment)

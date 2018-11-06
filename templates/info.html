@@ -12,7 +12,7 @@
 {% include 'menu.html' %}
 <div class="container">
     {% include 'header.html' %}
-    <h2>The team</h2>
+    <legend>The team</legend>
     <div class="profils-grid" style="display: grid; width:80%; margin: auto;">
         <div class="profil profil-1">
             <h3>Paul Asquin</h3>
@@ -41,6 +41,26 @@
                 <img class="img_link linkedin" src="{{ url_for('static', filename='media/linkedin.svg') }}"/>
             </a>
         </div>
+    </div>
+    <legend>The project</legend>
+    <div class="project-description">
+        <b>What is the purpose of this project ?</b><br/>
+        This project stands for a tool to help scientists to monitor mosquitoes propagation.<br/>
+        To achieve this goal, our tool is retrieving various data:
+        <li>Mosquito species guessed from its picture, using Machine Learning</li>
+        <li>Geolocation, asked from the user and used to retrieve other data as:</li>
+        <li>The mosquito population density</li>
+        <li>The temperature</li>
+        <li>The humidity</li>
+        Those data combined can help scientists to predict which disease is going to expand in which area.<br/>
+        This information is essential to guess which vaccine to deploy where and when.
+        <br/>
+        Here are the slides we originally presented to introduce this project:
+        <br/>
+        <img class="slide" src="{{ url_for('static', filename='media/slide_1.png') }}"/>
+        <img class="slide" src="{{ url_for('static', filename='media/slide_2.png') }}"/>
+
+
     </div>
 </div>
 </body>

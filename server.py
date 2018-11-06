@@ -122,8 +122,12 @@ def postForm():
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False)
     if os.path.exists(CERTIFCATE_PATH) and os.path.exists(KEY_PATH):
+        print("Loading with certificate")
+        with open(KEY_PATH, "r") as f:
+            print(f.readlines())
         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         context.load_cert_chain(CERTIFCATE_PATH, KEY_PATH)
         app.run(host='0.0.0.0', ssl_context=context)
     else:
+        print("Loading HTTP")
         app.run(host='0.0.0.0')

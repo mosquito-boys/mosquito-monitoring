@@ -36,6 +36,9 @@ def get_user_id():
     email = 'flo@flo.com'
     print(SQLiteEngine.get_user_id(email))
 
+def get_all_mosquitos():
+    print(SQLiteEngine.get_all_mosquitos())
+
 
 if __name__ == "__main__":
 
@@ -60,6 +63,9 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] == "--user_id":
         print("Testing get_user_id in DB")
         get_user_id()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--all_mosquitos":
+        print("Testing get_all_mosquitos in DB")
+        get_all_mosquitos()
     else:
         if len(sys.argv) > 1 and (sys.argv[1] == "--help" or sys.argv[1] == "-h"):
             print("Didn't recognize command : " + sys.argv[1])

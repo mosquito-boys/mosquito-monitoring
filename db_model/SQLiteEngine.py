@@ -14,6 +14,12 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def create_database():
+
+        '''
+        Initialise
+        :return NONE:
+        '''
+
         print("initializating DB...")
 
         connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -64,6 +70,9 @@ class SQLiteEngine(DBEngine):
 
         res = cursor.fetchall()
 
+        connection.commit()
+        connection.close()
+
         if len(res) > 0:
             return True, res[0][0]
         else:
@@ -77,6 +86,9 @@ class SQLiteEngine(DBEngine):
                         FROM Mosquito''')
 
         res = cursor.fetchall()
+
+        connection.commit()
+        connection.close()
 
         return res[0][0]
 
@@ -95,10 +107,12 @@ class SQLiteEngine(DBEngine):
 
         res = cursor.fetchall()
 
-        print(res[0][0])
-
         connection.commit()
         connection.close()
+
+        return res[0][0]
+
+
 
     @staticmethod
     def get_user_id(email):
@@ -112,12 +126,37 @@ class SQLiteEngine(DBEngine):
 
         res = cursor.fetchall()
 
+        connection.commit()
+        connection.close()
+
         print(res)
         return res[0][0]
 
-        #connection.commit()
-        #connection.close()
 
+
+    @staticmethod
+    def get_all_mosquitos():
+        '''
+        '''
+        connection = sqlite3.connect(SQLiteEngine.__db_name)
+        cursor = connection.cursor()
+        cursor.execute('''
+                    SELECT m.id_mosquito
+                        , s.name as mosquito_species
+                        , u.name as user_name
+                        , m.latitude
+                        , m.longitude
+                     FROM Mosquito as m
+                     LEFT JOIN Species as s on m.id_species = s.id_species
+                     LEFT JOIN User as u on m.id_user = u.id_user''')
+        res = cursor.fetchall()
+
+        connection.commit()
+        connection.close()
+
+        print("tuple format (id_mosquito, mosquito_species, user_name, lat, lon)" )
+
+        return res
 
 
     @staticmethod
@@ -134,6 +173,7 @@ class SQLiteEngine(DBEngine):
 
         connection.commit()
         connection.close()
+
 
     @staticmethod
     def store_species(name):

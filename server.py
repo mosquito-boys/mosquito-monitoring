@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request, render_template
-
+import ssl
 from db_model.SQLiteEngine import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User
@@ -16,6 +16,10 @@ app = Flask(__name__)
 LRUCache = LRU()
 LRUCache.start()
 SQLiteEngine.create_database()
+
+KEY_PATH = "private_key.key"
+CERTIFCATE_PATH = "ca-certificates.crt"
+
 
 @app.route("/")
 def renderHTML():
@@ -117,4 +121,9 @@ def postForm():
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False)
-    app.run(host='0.0.0.0')
+    if os.path.exists(CERTIFCATE_PATH) and os.path.exists(KEY_PATH):
+        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        context.load_cert_chain(CERTIFCATE_PATH, KEY_PATH)
+        app.run(host='0.0.0.0', ssl_context=context)
+    else:
+        app.run(host='0.0.0.0')

@@ -8,5 +8,7 @@ services:
     env_file: .env
     volumes:
       - .:/usr/src/app
+      - /etc/ssl/private_key.key:/usr/src/app/private_key.key
+      - /etc/ssl/certs/ca-certificates.crt:/usr/src/app/ca-certificates.crt
     ports:
       - 5000:5000

@@ -6,7 +6,7 @@ Deployment : [https://mosquito-monitor.herokuapp.com/](https://mosquito-monitor.
 
 # Introduction
 ## Project purpose
-The purpose of this project is to be able to monitor and later anticipate mosquito related epidemics.
+This project aims to monitor and later anticipate mosquito related epidemics.
 Crossing the information about mosquito species, localization, temperature and population density may be really powerful to intuite the evolution or the apparition of an epidemic. Thus, we want to create a plateform where anyone can participate to this big-scale survey.
 
 The user can upload a mosquito picture and will be asked to provide additional information as they localization or the mosquito species if known.
@@ -15,7 +15,13 @@ Those information will be written in a database, and a Machine Learning algorith
 ## Project graph
 ![Project Graph](docs/graph_project.png) 
 
-You need python 3.6 and the dependencies installed 
+We initiated a Dockerfile and a docker-compose.yml file in order to wrap all the requirements and dependancies of this project.
+
+You have then 2 choices:
+
+- The 1st one is to install all the requirements (see Installation below)
+- The second one is to have Docker (version 1.13.0+ and above) installed and running on your O
+
 
 # Installation
 
@@ -25,8 +31,14 @@ pip3 install -r requirements.txt
 
 ## Start server
 
+### Without Docker
 ```
 FLASK_APP=server.py FLASK_DEBUG=1 python3 -m flask run
+```
+
+### With Docker
+```
+docker-compose up
 ```
 
 ## Label a mosquito

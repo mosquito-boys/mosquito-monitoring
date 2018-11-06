@@ -20,7 +20,7 @@ We initiated a Dockerfile and a docker-compose.yml file in order to wrap all the
 You have then 2 choices:
 
 - The 1st one is to install all the requirements (see Installation below)
-- The second one is to have Docker (version 1.13.0+ and above) installed and running on your O
+- The second one is to have Docker (version 1.13.0+ and above) installed and running on your OS
 
 
 # Installation

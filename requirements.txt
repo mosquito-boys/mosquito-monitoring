@@ -1,7 +1,7 @@
 numpy==1.14.1
 Flask==1.0.2
 requests>=2.20.0
-tensorflow==1.4
+tensorflow==1.5
 tensorflow_hub==0.1.1
 tensorboard==1.8.0
 opencv_contrib_python==3.4.3.18

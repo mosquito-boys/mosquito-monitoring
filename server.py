@@ -123,10 +123,10 @@ if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False)
     if os.path.exists(CERTIFCATE_PATH) and os.path.exists(KEY_PATH):
         print("Loading with certificate")
-	context = SSL.Context(SSL.SSLv23_METHOD)
-	context.use_privatekey_file(KEY_PATH)
-	context.use_certificate_file(CRT_PATH)
-        app.run(host='0.0.0.0', ssl_context=context)
+		context = SSL.Context(SSL.SSLv23_METHOD)
+		context.use_privatekey_file(KEY_PATH)
+		context.use_certificate_file(CRT_PATH)
+		app.run(host='0.0.0.0', ssl_context=context)
     else:
         print("Loading HTTP")
         app.run(host='0.0.0.0')

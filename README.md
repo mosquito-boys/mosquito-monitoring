@@ -2,8 +2,8 @@
 Identify mosquito species and collect data to anticipate epidemics propagation
 for a CentraleSupelec project
 
-Deployed app : [https://mosquito-monitor.herokuapp.com/](https://mosquito-monitor.herokuapp.com/)
-
+Deployed app (old) : [mosquito-monitor.herokuapp.com](https://mosquito-monitor.herokuapp.com)   
+Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](mosquito.paulasquin.com) 
 # Introduction
 ## Project purpose
 This project aims to monitor and later anticipate mosquito related epidemics.
@@ -27,7 +27,9 @@ You have then 2 choices:
 
 NB: You need to have python 3.6 installed and **not** 3.7 installed on your machine.
 
-```
+```bash
+git clone https://github.com/mosquito-boys/mosquito-monitoring.git
+cd mosquito-monitoring
 pip3 install -r requirements.txt
 ```
 
@@ -35,10 +37,38 @@ You may have to install some additional libraries for opencv.
 
 ## Start server
 
+The server will listen on port 5000
+
 ### With Docker
-```
+```bash
+git clone https://github.com/mosquito-boys/mosquito-monitoring.git
+cd mosquito-monitoring
+# You should copy in this directory the .env file with your API keys, then run
 docker-compose up
 ```
+
+If you want to rebuild the project you can run 
+
+```bash
+docker-compose build
+```
+
+### With Docker on a server
+
+If you want to start the project on your server startup, you can follow this procedure:
+```bash
+sudo cd /var/www
+sudo git clone https://github.com/mosquito-boys/mosquito-monitoring.git
+sudo cd mosquito-monitoring
+# You should copy in this directory the .env file with your API keys, then run
+sudo cp docker-mosquito.service /etc/systemd/system
+sudo systemctl enable docker-mosquito
+sudo systemctl start docker-mosquito
+# This last command will run docker-compose up
+``` 
+
+Note: the project support ssl certificates! You can edit [docker-compose.yml](docker-compose.yml) to mount your own certificates.  
+Ours were generated with [Let's Encrypt](https://letsencrypt.org/)  
 
 ### Without Docker
 Debug mode
@@ -49,8 +79,6 @@ Normal mode
 ```
 python3 server.py
 ```
-
-The server should be listening to port 5000
 
 ## Label a mosquito
 Import the mosquito classification module
@@ -63,12 +91,12 @@ Request the labelling
 command_classification.label_automatic(path_img)
 ```
 
-Exemple of return
+Return example 
 ```
 [['aedes', '0.8780854'], ['culex', '0.11636846'], ['anopheles', '0.0055461014']]
 ```
 
-## Additionnal commands
+## Additional commands
 
 Remove the database (useful for development purpose)
 

@@ -1,6 +1,5 @@
 import os
 from flask import Flask, request, render_template
-from OpenSSL import SSL
 from db_model.SQLiteEngine import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User

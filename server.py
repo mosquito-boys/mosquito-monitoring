@@ -21,15 +21,7 @@ CRT_PATH = "fullchain.pem"
 
 @app.route("/")
 def renderHTML():
-    if not request.is_secure():
-        print("Redirecting from http to https")
-        url = request.url.replace('http://', 'https://', 1)
-        print(url)
-        code = 301
-        return redirect(url, code=code)
-    else:
-        print("Loading forumular")
-        return render_template("pages/formular.html")
+    return render_template("pages/formular.html")
 
 
 @app.route("/info")
@@ -47,7 +39,6 @@ def renderMap():
 @app.route("/postform", methods=["POST"])
 def postForm():
     try:
-
         # preparing variables to return in template to user
         predictions = []
         mosquito = None
@@ -108,7 +99,6 @@ def postForm():
         print("store_mosquito")
         SQLiteEngine.store_mosquito(id_user, mosquito)
 
-
         return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic,
                                prediction=predictions, mosquito=mosquito)
 
@@ -127,7 +117,6 @@ def postForm():
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False)
-    print("Url secure ? : " + str(request.is_secure()))
     if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
         print("Loading with certificate")
         app.run(host='0.0.0.0', ssl_context=(CRT_PATH, KEY_PATH))

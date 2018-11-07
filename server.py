@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask, request, render_template
 from OpenSSL import SSL
 from db_model.SQLiteEngine import SQLiteEngine
@@ -17,13 +16,20 @@ LRUCache = LRU()
 LRUCache.start()
 SQLiteEngine.create_database()
 
-KEY_PATH = "private_key.key"
-CRT_PATH = "ca-certificates.crt"
-
+KEY_PATH = "privkey.pem"
+CRT_PATH = "fullchain.pem"
 
 @app.route("/")
 def renderHTML():
-    return render_template("pages/formular.html")
+    if not request.is_secure():
+        print("Redirecting from http to https")
+        url = request.url.replace('http://', 'https://', 1)
+        print(url)
+        code = 301
+        return redirect(url, code=code)
+    else:
+        print("Loading forumular")
+        return render_template("pages/formular.html")
 
 
 @app.route("/info")
@@ -121,12 +127,10 @@ def postForm():
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False)
+    print("Url secure ? : " + str(request.is_secure()))
     if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
         print("Loading with certificate")
-        context = SSL.Context(SSL.SSLv23_METHOD)
-        context.use_privatekey_file(KEY_PATH)
-        context.use_certificate_file(CRT_PATH)
-        app.run(host='0.0.0.0', ssl_context=context)
+        app.run(host='0.0.0.0', ssl_context=(CRT_PATH, KEY_PATH))
     else:
         print("Loading HTTP")
         app.run(host='0.0.0.0')

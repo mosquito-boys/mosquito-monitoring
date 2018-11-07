@@ -20,16 +20,28 @@ CRT_PATH = "fullchain.pem"
 
 @app.route("/")
 def renderHTML():
+    """
+    Render home page with an embedded formular to upload a mosquito pictures
+    :return:
+    """
     return render_template("pages/formular.html")
 
 
 @app.route("/info")
 def renderInfo():
+    """
+    Render the page with info on project and team
+    :return: info.html
+    """
     return render_template("pages/info.html")
 
 
 @app.route("/map")
 def renderMap():
+    """
+    Management mosquitoes rendering from database using using Google Maps API
+    :return:
+    """
     mosquitos = SQLiteEngine.get_all_mosquitos()
     print("mosquitos in DB", mosquitos)
     return render_template("pages/map.html", mosquitos=mosquitos)
@@ -37,6 +49,10 @@ def renderMap():
 
 @app.route("/postform", methods=["POST"])
 def postForm():
+    """
+    Pass information from formular to back-end and send results to response for front answer
+    :return: render response
+    """
     try:
         # preparing variables to return in template to user
         predictions = []
@@ -115,6 +131,9 @@ def postForm():
 
 
 if __name__ == "__main__":
+    """
+    Launch flask application, with SSL certificate if available
+    """
     # app.run(host='0.0.0.0', port=5000, debug=False)
     if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
         print("Loading with certificate")

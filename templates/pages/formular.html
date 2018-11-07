@@ -24,12 +24,12 @@
                 <legend>Locate your mosquito</legend>
                 <label id="ask_location" for="location">Help us locate this nasty mosquito by sharing your location</label>
                 <button type="button" id="location" onclick="getLocation()">Share your location</button>
-
-                <label>Or enter manually your coordinates</label>
-                <br/> Latitude <input id="latitude" name="latitude" value=""/>
-                <br/> Longitude <input id="longitude" name="longitude" value=""/>
-
                 <br/>
+                <label>Or enter manually your coordinates</label>
+                <div id="manual-coordinates">
+                    <br/> <div id="legend-latitude">Latitude</div> <div id="input-latitude"><input id="latitude" name="latitude" value=""/></div>
+                    <br/> <div id="legend-longitude">Longitude</div> <div id="input-longitude"><input id="longitude" name="longitude" value=""/></div>
+                </div>
                 <small id="locationHelp" class="form-text text-muted">We'll never share your location with anyone else. Your location will be REALLY useful to monitor mosquitoes propagation</small>
                 <p id="map_location"></p>
 

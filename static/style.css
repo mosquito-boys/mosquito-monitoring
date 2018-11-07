@@ -218,3 +218,32 @@ h1 {
 .head {
     margin-top: 50px;
 }
+
+#manual-coordinates {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, min-content);
+    grid-templates-rows: repeat(1, 20px);
+}
+
+#legend-latitude {
+    text-align: center;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#input-latitude {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#legend-longitude {
+    text-align: center;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#input-longitude {
+    grid-column: 2;
+    grid-row: 2;
+}

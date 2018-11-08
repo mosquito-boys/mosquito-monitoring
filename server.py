@@ -9,6 +9,7 @@ import classification.command_classification as command_classification
 from utilities.LRU import LRU
 import utilities.Errors as Errors
 import traceback
+import datetime
 
 app = Flask(__name__)
 
@@ -18,6 +19,38 @@ SQLiteEngine.create_database()
 
 KEY_PATH = "privkey.pem"
 CRT_PATH = "fullchain.pem"
+
+
+def check_fix_date(date):
+    """
+    Checking if date is coherent and not in future. Else returning current time
+    :param date: (str aaaa-mm-dd)
+    :return: fixed date (str aaaa-mm-dd)
+    """
+    # default, using today's date
+    now = datetime.datetime.now()
+    ret = '-'.join([str(now.year), str(now.month), str(now.day)])
+
+    # Flag if we can use this user's date
+    date_ok = False
+    date_split = date.split("-")
+
+    # Check if date is not in future
+    if len(date_split) == 3:
+        [year, month, day] = date_split
+        if year.isdigit() and month.isdigit() and day.isdigit():
+            date_datetime = datetime.datetime(int(year), int(month), int(day))
+            if date_datetime <= now:
+                date_ok = True
+
+    # React depending if date was ok
+    if date_ok:
+        print("Date is OK")
+        ret = date
+    else:
+        print("Date (" + date + ") wasn't OK. Using" + ret)
+    return ret
+
 
 @app.route("/")
 def renderHTML():
@@ -65,8 +98,6 @@ def postForm():
         # request informations
         try:
             form = request.form
-            latitude = form['latitude']
-            longitude = form['longitude']
             file = request.files["fileToUpload"]
         except Exception:
             raise Errors.FormError()
@@ -75,7 +106,10 @@ def postForm():
 
         # extracting objects
         user = User(form["name"], form["email"])
-        mosquito = Mosquito(user, file.filename, latitude, longitude, form["comment"])
+        latitude = form['latitude']
+        longitude = form['longitude']
+        date = check_fix_date(form['date'])
+        mosquito = Mosquito(user, file.filename, latitude, longitude, form["comment"], date)
         user_pic_path = "./dataset_to_be_validated/" + mosquito.filename
         safe_name = ''.join(c for c in mosquito.filename if c not in '(){}<>')
         generated_pic_path = "./static/tmp/" + safe_name
@@ -84,7 +118,7 @@ def postForm():
         if not os.path.exists("./dataset_to_be_validated"):
             os.makedirs("./dataset_to_be_validated")
         file.save(user_pic_path)
-
+        print(date)
         print(user_pic_path)
         print(generated_pic_path)
 
@@ -144,5 +178,3 @@ if __name__ == "__main__":
     else:
         print("Loading HTTP")
         app.run(host='0.0.0.0')
-
-

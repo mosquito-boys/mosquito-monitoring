@@ -26,13 +26,15 @@
                 <button type="button" id="location" onclick="getLocation()">Share your location</button>
                 <label>Or enter manually your coordinates</label>
                 <div id="manual-coordinates">
-                    <br/> <p id="legend-latitude">Latitude</p> <span id="input-latitude"><input id="latitude" name="latitude" value=""/></span>
-                    <br/> <p id="legend-longitude">Longitude</p> <span id="input-longitude"><input id="longitude" name="longitude" value=""/></span>
+                    <p id="legend-latitude">Latitude</p> <div id="input-latitude"><input id="latitude" name="latitude" value=""/></div>
+                    <p id="legend-longitude">Longitude</p> <div id="input-longitude"><input id="longitude" name="longitude" value=""/></div>
+                    <p id ="legend-date">Date of picture</p> <div id="input-date"><input id="date" name="date" type="date"/></div>
                 </div>
-                <small id="locationHelp" class="form-text text-muted">We'll never share your location with anyone else. Your location will be REALLY useful to monitor mosquitoes propagation</small>
+                <small id="locationHelp" class="form-text text-muted">We'll never share your location outside of this project. Your location will be REALLY useful to monitor mosquitoes propagation</small>
                 <p id="map_location"></p>
 
                 <script>
+                    document.getElementById("date").valueAsDate = new Date();
                     var map = document.getElementById("map_location");
                     var ask_map = document.getElementById("ask_location");
 

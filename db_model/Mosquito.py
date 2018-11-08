@@ -7,7 +7,7 @@ class Mosquito:
         (private) user (User): the User who uploaded this mosquito
     """
 
-    def __init__(self, user, filename, latitude=None, longitude=None, comment = None):
+    def __init__(self, user, filename, latitude=None, longitude=None, comment = None, date=""):
         """
         Class constructor
         :param user (User): the User who uploaded this mosquito
@@ -25,6 +25,7 @@ class Mosquito:
             self.__longitude = longitude
         self.__scientist_label = None
         self.__comment = comment
+        self.__date = date
 
 
     @property
@@ -66,6 +67,11 @@ class Mosquito:
     def comment(self):
         return self.__comment
 
+    @property
+    def date(self):
+        return self.__date
+
     @scientist_label.setter
     def scientist_label(self, scientist_label):
         self.__scientist_label = scientist_label
+

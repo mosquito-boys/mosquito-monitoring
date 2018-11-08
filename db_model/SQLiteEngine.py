@@ -33,7 +33,7 @@ class SQLiteEngine(DBEngine):
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS Mosquito (id_mosquito integer PRIMARY KEY AUTOINCREMENT, 
                     id_species integer, id_user integer NOT NULL, latitude float, longitude float,
-                    filename varchar(100) NOT NULL, comment varchar(500),
+                    filename varchar(100) NOT NULL, comment varchar(500), date varchar(100),  
                     FOREIGN KEY (id_user) References User(id_user),
                     FOREIGN KEY (id_species) References Species(id_species));''')
 
@@ -162,6 +162,7 @@ class SQLiteEngine(DBEngine):
                         , m.latitude
                         , m.longitude
                         , m.id_species
+                        , m.date
                      FROM Mosquito as m
                      LEFT JOIN Species as s on m.id_species = s.id_species
                      LEFT JOIN User as u on m.id_user = u.id_user''')
@@ -179,7 +180,8 @@ class SQLiteEngine(DBEngine):
                          "user_name": elt[2],
                          "lat": elt[3],
                          "lng": elt[4],
-                         "id_species": elt[5]}
+                         "id_species": elt[5],
+                         "date": elt[6]}
             filtered_dict_elts = dict(filter(lambda item: item[1] is not None, dict_elts.items()))
             dict_res.append(filtered_dict_elts)
 
@@ -237,11 +239,11 @@ class SQLiteEngine(DBEngine):
         print("id_species", id_species)
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''INSERT INTO Mosquito(id_species, id_user, latitude, longitude, filename, comment)
-                        VALUES(?, ?, ?, ?, ?, ?)'''
+        cursor.execute('''INSERT INTO Mosquito(id_species, id_user, latitude, longitude, filename, comment, date)
+                        VALUES(?, ?, ?, ?, ?, ?, ?)'''
                        , (
                            id_species, id_user, mosquito.latitude, mosquito.longitude, mosquito.filename,
-                           mosquito.comment))
+                           mosquito.comment, mosquito.date))
 
         connection.commit()
         connection.close()

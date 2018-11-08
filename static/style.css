@@ -222,8 +222,8 @@ h1 {
 #manual-coordinates {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(2, min-content);
-    grid-templates-rows: repeat(1, 20px);
+    grid-template-columns: min-content 100px;
+    grid-templates-rows: repeat(3, 100px);
 }
 
 #legend-latitude {
@@ -246,4 +246,16 @@ h1 {
 #input-longitude {
     grid-column: 2;
     grid-row: 2;
+}
+
+#legend-date{
+    width: 100px;
+    text-align: center;
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#input-date{
+    grid-column: 2;
+    grid-row: 3;
 }

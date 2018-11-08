@@ -23,7 +23,7 @@ CRT_PATH = "fullchain.pem"
 def renderHTML():
     """
     Render home page with an embedded formular to upload a mosquito pictures
-    :return:
+    :return: formular.html
     """
     return render_template("pages/formular.html")
 
@@ -41,7 +41,7 @@ def renderInfo():
 def renderMap():
     """
     Management mosquitoes rendering from database using using Google Maps API
-    :return:
+    :return: map.html
     """
     mosquitos = SQLiteEngine.get_all_mosquitos()
     print("mosquitos in DB", mosquitos)
@@ -52,7 +52,7 @@ def renderMap():
 def postForm():
     """
     Pass information from formular to back-end and send results to response for front answer
-    :return: render response
+    :return: response.html or error page
     """
     try:
         # preparing variables to return in template to user
@@ -135,10 +135,11 @@ if __name__ == "__main__":
     """
     Launch flask application, with SSL certificate if available
     """
-    # app.run(host='0.0.0.0', port=5000, debug=False)
     if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
         print("Loading with certificate")
+        # Forcing https:// connections
         sslify = SSLify(app)
+        # Running the app with certificates
         app.run(host='0.0.0.0', ssl_context=(CRT_PATH, KEY_PATH))
     else:
         print("Loading HTTP")

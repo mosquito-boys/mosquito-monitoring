@@ -14,11 +14,10 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def create_database():
-
-        '''
-        Initialise
-        :return NONE:
-        '''
+        """
+        Initialise database
+        :return:
+        """
 
         print("initializating DB...")
 
@@ -46,14 +45,23 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def drop_database():
+        """
+        Droping database to reboot the project from void
+        :return: None
+        """
         print("Droping Database...")
         os.remove(SQLiteEngine.__db_name)
 
     @staticmethod
     def is_user_in_db(email):
+        """
+        Checking if user exists in database
+        :param email: the user email adress
+        :return: (True, user id) OR (False, None)
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT id_user FROM User WHERE email = ?''',(email,) )
+        cursor.execute('''SELECT id_user FROM User WHERE email = ?''', (email,))
 
         res = cursor.fetchall()
 
@@ -64,9 +72,14 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def is_species_in_db(name):
+        """
+        Check if already encounter this species.
+        :param name: species name
+        :return: (True, id species) OR (False, None)
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT id_species FROM Species WHERE name = ?''',(name,) )
+        cursor.execute('''SELECT id_species FROM Species WHERE name = ?''', (name,))
 
         res = cursor.fetchall()
 
@@ -80,6 +93,10 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def get_mosquitos_by_species():
+        """
+        Get the mosquitoes from the database
+        :return: The entire mosquitoes data
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''SELECT * 
@@ -92,13 +109,13 @@ class SQLiteEngine(DBEngine):
 
         return res[0][0]
 
-
     @staticmethod
     def get_mosquitos_species_id(name):
-        '''
-        :param name:
-        :return None:
-        '''
+        """
+        Get id species by name
+        :param name: species label
+        :return: id species
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''SELECT id_species 
@@ -112,17 +129,16 @@ class SQLiteEngine(DBEngine):
 
         return res[0][0]
 
-
-
     @staticmethod
     def get_user_id(email):
-        '''
-        :param name:
-        :return None:
-        '''
+        """
+        Get id user using email
+        :param email:
+        :return: id_user
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT id_user FROM User WHERE email = ? ''', (email, ))
+        cursor.execute('''SELECT id_user FROM User WHERE email = ? ''', (email,))
 
         res = cursor.fetchall()
 
@@ -131,12 +147,12 @@ class SQLiteEngine(DBEngine):
 
         return res[0][0]
 
-
-
     @staticmethod
     def get_all_mosquitos():
-        '''
-        '''
+        """
+        Get every mosquitoes from database structured in a dict
+        :return: dict of every mosquitoes
+        """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
         cursor.execute('''
@@ -159,24 +175,23 @@ class SQLiteEngine(DBEngine):
         dict_res = []
         for elt in res:
             dict_elts = {"id_mosquito": elt[0],
-                             "mosquito_species": elt[1],
-                             "user_name": elt[2],
-                             "lat": elt[3],
-                             "lng": elt[4],
-                             "id_species": elt[5]}
+                         "mosquito_species": elt[1],
+                         "user_name": elt[2],
+                         "lat": elt[3],
+                         "lng": elt[4],
+                         "id_species": elt[5]}
             filtered_dict_elts = dict(filter(lambda item: item[1] is not None, dict_elts.items()))
             dict_res.append(filtered_dict_elts)
 
         return dict_res
 
-
     @staticmethod
     def store_user(user):
-
-        '''
+        """
+        Store a user in database
         :param user:
-        :return None:
-        '''
+        :return:
+        """
 
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
@@ -185,13 +200,13 @@ class SQLiteEngine(DBEngine):
         connection.commit()
         connection.close()
 
-
     @staticmethod
     def store_species(name):
-        '''
+        """
+        Store a new species in database if not already exists
         :param name:
-        :return None:
-        '''
+        :return:
+        """
         if SQLiteEngine.is_species_in_db(name)[0]:
             print('Species already stored in the DB')
         else:
@@ -204,11 +219,12 @@ class SQLiteEngine(DBEngine):
 
     @staticmethod
     def store_mosquito(id_user, mosquito):
-        '''
+        """
+        Store a mosquito in database and manage if have to create a species
         :param id_user:
         :param mosquito:
-        :return None:
-        '''
+        :return:
+        """
 
         # Retrieving the mosquito species_id
 
@@ -223,7 +239,9 @@ class SQLiteEngine(DBEngine):
         cursor = connection.cursor()
         cursor.execute('''INSERT INTO Mosquito(id_species, id_user, latitude, longitude, filename, comment)
                         VALUES(?, ?, ?, ?, ?, ?)'''
-                       , (id_species, id_user, mosquito.latitude, mosquito.longitude, mosquito.filename, mosquito.comment) )
+                       , (
+                           id_species, id_user, mosquito.latitude, mosquito.longitude, mosquito.filename,
+                           mosquito.comment))
 
         connection.commit()
         connection.close()

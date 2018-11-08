@@ -37,7 +37,15 @@ You may have to install some additional libraries for opencv.
 
 ## Start server
 
-The server will listen on port 5000
+The server will listen on port 5000.
+You will need a Google Vision API Key written in the .env file. 
+You will have to create this file at the root of the project, like : 
+
+```bash
+#.env
+GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY
+```
+
 
 ### With Docker
 ```bash

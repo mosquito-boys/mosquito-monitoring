@@ -13,18 +13,25 @@ class Preprocessing:
     """
 
     __API_KEY = get_api_key()
+    __API_url = "https://vision.googleapis.com/v1/images:annotate"
 
-    @staticmethod
-    def mosquito_position(image_path):
+    def __init__(self, image_path):
+        """
+        get mosquito coordinates from google api
+        :param image_path: the path of the input picture to preprocess
+        """
+        self.__image_path = image_path
+        # find coordinates
+        self.__coordinates = self.__mosquito_position()
+
+    def __mosquito_position(self):
         """
         retrieves coordinates of 4 points in the image framing the mosquito
         (image width pct for x,  image length pct for y)
-        :param image_path:
+        :return coordinates: of the found mosquito
         """
-        with open(image_path, 'rb') as image_file:
+        with open(self.__image_path, 'rb') as image_file:
             content = base64.encodebytes(image_file.read())
-
-        url = "https://vision.googleapis.com/v1/images:annotate"
 
         querystring = {"key": Preprocessing.__API_KEY}
 
@@ -50,7 +57,7 @@ class Preprocessing:
             'cache-control': "no-cache"
         }
 
-        response = requests.request("POST", url, data=str(payload), headers=headers, params=querystring).json()
+        response = requests.request("POST", Preprocessing.__API_url, data=str(payload), headers=headers, params=querystring).json()
 
         if "responses" not in response.keys():
             raise APIQuotaExceeded()
@@ -60,79 +67,66 @@ class Preprocessing:
             except Exception:
                 raise Errors.InsectNotFound
 
-        coords = None
+        coordinates = None
+
         for res in response:
             if res['name'] == 'Insect':  # only fetching the first insect labeled objects
-                coords = res["boundingPoly"]["normalizedVertices"]
+                coordinates = res["boundingPoly"]["normalizedVertices"]
                 break
-        if coords is None:
+
+        if coordinates is None:
             print('\tNo insect was found on the picture')
             raise Errors.InsectNotFound
         else:
-            return coords
+            return coordinates
 
-    @staticmethod
-    def compute_pt(coords, img):
+    def __compute_pt(self, img):
         """
         Compute pixel points
-        :param coords:
-        :param img:
+        :param img: the np array representing the picture
         :return pt1, pt2:
         """
-        pt1 = (int(coords[0]["x"] * len(img[0])), int(coords[0]["y"] * len(img)))
-        pt2 = (int(coords[2]["x"] * len(img[0])), int(coords[2]["y"] * len(img)))
+        pt1 = (int(self.__coordinates[0]["x"] * len(img[0])), int(self.__coordinates[0]["y"] * len(img)))
+        pt2 = (int(self.__coordinates[2]["x"] * len(img[0])), int(self.__coordinates[2]["y"] * len(img)))
         return pt1, pt2
 
-    @staticmethod
-    def mosquito_croping(coords, image_path):
+    def __mosquito_cropping(self):
         """
         crops the image around the mosquito and resizes the image into a square
-        :param coords:
-        :param image_path:
         """
-
-        img = cv2.imread(image_path)
-        pt1, pt2 = Preprocessing.compute_pt(coords, img)
+        img = cv2.imread(self.__image_path)
+        pt1, pt2 = self.__compute_pt(img)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
         dim = (150, 150)
         crop_img = cv2.resize(crop_img, dim, interpolation=cv2.INTER_AREA)
         return crop_img
 
-    @staticmethod
-    def mosquito_framing(coords, image_path):
+    def __mosquito_framing(self):
         """
         Put a black rectangle arround the mosquito in the intial picture
-        :param coords:
-        :param image_path:
         """
         # appends a black rectangle around the mosquito
-        img = cv2.imread(image_path)
-        pt1, pt2 = Preprocessing.compute_pt(coords, img)
-        cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
-        return img
+        framed_img = cv2.imread(self.__image_path)
+        pt1, pt2 = self.__compute_pt(framed_img)
+        cv2.rectangle(framed_img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
+        return framed_img
 
-    @staticmethod
-    def save_crop_img(coords, path_origin, saving_path):
+    def save_crop_img(self, saving_path):
         """
         find the insect in of the given path image,
         crop the image to the insect and save it in the given preprocessed path
-        :param coords:
-        :param path_origin:
-        :param saving_path:
+        :param saving_path: where to same the new picture
         """
-        crop_img = Preprocessing.mosquito_croping(coords, path_origin)
+        crop_img = self.__mosquito_cropping()
         cv2.imwrite(saving_path, crop_img)
         return saving_path
 
-    @staticmethod
-    def save_framed_img(coords, path_origin, saving_path):
+    def save_framed_img(self, saving_path):
         """
         find the insect in of the given path image,
         crop the image to the insect and save it in the given preprocessed path
-        :param coords:
-        :param path_origin:
-        :param saving_path:
+        :param saving_path: where to same the new picture
         """
-        crop_img = Preprocessing.mosquito_framing(coords, path_origin)
+        crop_img = self.__mosquito_framing()
         cv2.imwrite(saving_path, crop_img)
         return saving_path

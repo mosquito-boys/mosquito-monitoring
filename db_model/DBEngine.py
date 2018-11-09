@@ -8,7 +8,7 @@ class DBEngine(ABC):
 
     (public static) create_database: create the database if it don't exist.
     (public static) drop_datase: delete the database
-    (public static) get_mosquitos_by_species: perform the adequate query to the DB to get all mosquitos sorted by species
+    (public static) get_all_mosquitos: perform the adequate query to the DB to get all mosquitos sorted by species
     (public static) store_mosquito: insert the mosquito instance to the DB
     """
 
@@ -24,10 +24,10 @@ class DBEngine(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_mosquitos_by_species():
+    def store_mosquito(mosquito):
         pass
 
     @staticmethod
-    @abstractmethod
-    def store_mosquito():
+    @staticmethod
+    def get_all_mosquitos():
         pass

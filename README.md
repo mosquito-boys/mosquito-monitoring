@@ -72,7 +72,7 @@ sudo cd mosquito-monitoring
 sudo docker-compose -f docker-compose-ssl.yml build
 sudo cp docker-mosquito.service /etc/systemd/system
 sudo systemctl enable docker-mosquito
-sudo systemctl start docker-mosquito
+sudo systemctl restart docker-mosquito
 # This last command will run docker-compose -f docker-compose-ssl.yml up
 ``` 
 

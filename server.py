@@ -45,7 +45,7 @@ def check_fix_date(date):
 
     # React depending if date was ok
     if date_ok:
-        print("Date is OK")
+        # print("Date is OK")
         ret = date
     else:
         print("Date (" + date + ") wasn't OK. Using" + ret)
@@ -77,7 +77,6 @@ def renderMap():
     :return: map.html
     """
     mosquitos = SQLiteEngine.get_all_mosquitos()
-    print("mosquitos in DB", mosquitos)
     return render_template("pages/map.html", mosquitos=mosquitos)
 
 
@@ -138,14 +137,8 @@ def postForm():
 
         mosquito.label = predicted_label
 
-        # user part
-        user_already_exists, id_user = SQLiteEngine.is_user_in_db(user.email)
-        if not user_already_exists:
-            SQLiteEngine.store_user(user)
-
-        id_user = SQLiteEngine.get_user_id(user.email)
         print("store_mosquito")
-        SQLiteEngine.store_mosquito(id_user, mosquito)
+        SQLiteEngine.store_mosquito(user, mosquito)
 
         return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic,
                                prediction=predictions, mosquito=mosquito)

@@ -9,7 +9,7 @@ After=docker.service
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/var/www/mosquito-monitoring
-ExecStart=/usr/local/bin/docker-compose up -d
+ExecStart=/usr/local/bin/docker-compose -f docker-compose-ssl.yml up
 ExecStop=/usr/local/bin/docker-compose down
 TimeoutStartSec=0
 

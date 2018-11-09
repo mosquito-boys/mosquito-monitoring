@@ -73,7 +73,7 @@ sudo docker-compose -f docker-compose-ssl.yml build
 sudo cp docker-mosquito.service /etc/systemd/system
 sudo systemctl enable docker-mosquito
 sudo systemctl start docker-mosquito
-# This last command will run docker-compose up
+# This last command will run docker-compose -f docker-compose-ssl.yml up
 ``` 
 
 Note: the project support ssl certificates! You can edit [docker-compose-ssl.yml](docker-compose-ssl.yml) to mount your own certificates.  

@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, render_template
+from flask_sslify import SSLify
 from db_model.SQLiteEngine import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User
@@ -160,5 +161,12 @@ if __name__ == "__main__":
     """
     Launch flask application, with SSL certificate if available
     """
-    print("Loading HTTP")
-    app.run(host='0.0.0.0')
+    if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
+        print("Loading with certificate")
+        # Forcing https:// connections
+        sslify = SSLify(app)
+        # Running the app with certificates
+        app.run(host='0.0.0.0', ssl_context=(CRT_PATH, KEY_PATH))
+    else:
+        print("Loading HTTP")
+        app.run(host='0.0.0.0')

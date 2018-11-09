@@ -69,7 +69,7 @@ sudo cd /var/www
 sudo git clone https://github.com/mosquito-boys/mosquito-monitoring.git
 sudo cd mosquito-monitoring
 # You should copy in this directory the .env file with your API keys, then run
-sudo docker-compose build -f docker-compose-ssl.yml
+sudo docker-compose -f docker-compose-ssl.yml build
 sudo cp docker-mosquito.service /etc/systemd/system
 sudo systemctl enable docker-mosquito
 sudo systemctl start docker-mosquito

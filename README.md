@@ -3,7 +3,7 @@ Identify mosquito species and collect data to anticipate epidemics propagation
 for a CentraleSupelec project
 
 Deployed app (old) : [mosquito-monitor.herokuapp.com](https://mosquito-monitor.herokuapp.com)   
-Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](mosquito.paulasquin.com) 
+Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](https://mosquito.paulasquin.com) 
 # Introduction
 ## Project purpose
 This project aims to monitor and later anticipate mosquito related epidemics.

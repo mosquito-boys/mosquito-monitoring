@@ -6,7 +6,7 @@ github repository:
 https://github.com/mosquito-boys/mosquito-monitoring
 
 Deployed app (old) : [mosquito-monitor.herokuapp.com](https://mosquito-monitor.herokuapp.com)   
-Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](mosquito.paulasquin.com) 
+Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](https://mosquito.paulasquin.com) 
 
 ## Project purpose
 This project aims to monitor and later anticipate mosquito related epidemics.
@@ -86,7 +86,7 @@ Errors.py => some custom Exception classes
 LRU.py => multithreaded class that watch the static/tmp folder and remove the oldest files when the maximum size of 4 files is exceeded
 
 
-## Installation (only if you are not using Docker)
+## Installation of dependencies (only if you are not using Docker)
 
 NB: You need to have python 3.6 installed and **not** 3.7 installed on your machine.
 

@@ -15,7 +15,7 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def create_database():
         """
-        Initialise database
+        Initialises the database
         :return:
         """
 
@@ -46,7 +46,7 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def drop_database():
         """
-        Droping database to reboot the project from void
+        Drops database to reboot the project from scratch
         :return: None
         """
         print("Droping Database...")
@@ -55,8 +55,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def is_user_in_db(email):
         """
-        Checking if user exists in database
-        :param email: the user email adress
+        Checks if user exists in database
+        :param email (string): the user email address
         :return: (True, user id) OR (False, None)
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -73,8 +73,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def is_species_in_db(name):
         """
-        Check if already encounter this species.
-        :param name: species name
+        Checks if already encountered species
+        :param name (string): species name
         :return: (True, id species) OR (False, None)
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -94,12 +94,12 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def get_mosquitos_by_species():
         """
-        Get the mosquitoes from the database
+        Gets all mosquitoes from the database
         :return: The entire mosquitoes data
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
-        cursor.execute('''SELECT * 
+        cursor.execute('''SELECT *
                         FROM Mosquito''')
 
         res = cursor.fetchall()
@@ -112,8 +112,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def get_mosquitos_species_id(name):
         """
-        Get id species by name
-        :param name: species label
+        Given a species name retrieves the corresponding species ID
+        :param name (string): species label
         :return: id species
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -132,8 +132,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def get_user_id(email):
         """
-        Get id user using email
-        :param email:
+        Given a user email retrieves the corresponding user ID
+        :param email (string):
         :return: id_user
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
@@ -150,8 +150,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def get_all_mosquitos():
         """
-        Get every mosquitoes from database structured in a dict
-        :return: dict of every mosquitoes
+        Gets every mosquito from database structured in a dict
+        :return dict_res (dictionnary): all mosquitoes with mosquito_species, user_name, position, id_species, date
         """
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()
@@ -190,8 +190,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def store_user(user):
         """
-        Store a user in database
-        :param user:
+        Stores a user in the database
+        :param user (User):
         :return:
         """
 
@@ -205,8 +205,8 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def store_species(name):
         """
-        Store a new species in database if not already exists
-        :param name:
+        Stores a new species in database if not already stored
+        :param name (string):
         :return:
         """
         if SQLiteEngine.is_species_in_db(name)[0]:
@@ -222,20 +222,20 @@ class SQLiteEngine(DBEngine):
     @staticmethod
     def store_mosquito(id_user, mosquito):
         """
-        Store a mosquito in database and manage if have to create a species
-        :param id_user:
-        :param mosquito:
+        Stores a mosquito in database and if need be creates a new species
+        :param id_user (int):
+        :param mosquito (Mosquito):
         :return:
         """
 
         # Retrieving the mosquito species_id
-
         if SQLiteEngine.is_species_in_db(mosquito.label)[0]:
             id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
         else:
             SQLiteEngine.store_species(mosquito.label)
             id_species = SQLiteEngine.get_mosquitos_species_id(mosquito.label)
 
+        # Mosquito storage
         print("id_species", id_species)
         connection = sqlite3.connect(SQLiteEngine.__db_name)
         cursor = connection.cursor()

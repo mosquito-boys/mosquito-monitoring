@@ -1,6 +1,5 @@
 import os
 from flask import Flask, request, render_template
-from flask_sslify import SSLify
 from db_model.SQLiteEngine import SQLiteEngine
 from db_model.Mosquito import Mosquito
 from db_model.User import User
@@ -23,9 +22,10 @@ CRT_PATH = "fullchain.pem"
 
 def check_fix_date(date):
     """
-    Checking if date is coherent and not in future. Else returning current time
+    Checks if the given date is coherent and not in the future
+    Else returning current time
     :param date: (str aaaa-mm-dd)
-    :return: fixed date (str aaaa-mm-dd)
+    :return ret (string): fixed date with format aaaa-mm-dd
     """
     # default, using today's date
     now = datetime.datetime.now()
@@ -169,12 +169,5 @@ if __name__ == "__main__":
     """
     Launch flask application, with SSL certificate if available
     """
-    if os.path.exists(CRT_PATH) and os.path.exists(KEY_PATH):
-        print("Loading with certificate")
-        # Forcing https:// connections
-        sslify = SSLify(app)
-        # Running the app with certificates
-        app.run(host='0.0.0.0', ssl_context=(CRT_PATH, KEY_PATH))
-    else:
-        print("Loading HTTP")
-        app.run(host='0.0.0.0')
+    print("Loading HTTP")
+    app.run(host='0.0.0.0')

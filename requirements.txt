@@ -6,4 +6,4 @@ tensorflow_hub==0.1.1
 tensorboard==1.8.0
 opencv_contrib_python==3.4.3.18
 gunicorn==19.9.0
-Flask-SSLify
+flask-SSLify

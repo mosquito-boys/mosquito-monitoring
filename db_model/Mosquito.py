@@ -2,15 +2,24 @@ class Mosquito:
     """
     Represent a mosquito found by someone and upload to the server.
     Attributes:
-        (private static) id (int): a unique identifier for this instance
-        (private) species (Species): the detected species for this mosquito
         (private) user (User): the User who uploaded this mosquito
+        (private) label (string): file path towards the mosquito picture
+        (private) filename (string): the mosquito's species
+        (private) latitude (float): the mosquito's position latitude
+        (private) longitude (float): the mosquito's position longitude
+        (private) comment (string): if given, comment left by the User
+        (private) date (date): date of upload
     """
 
     def __init__(self, user, filename, latitude=None, longitude=None, comment = None, date=""):
         """
         Class constructor
-        :param user (User): the User who uploaded this mosquito
+        :param user (User):
+        :param filename:
+        :param latitude:
+        :param longitude:
+        :param comment:
+        :param date:
         """
         self.__label = None
         self.__user = user
@@ -23,7 +32,6 @@ class Mosquito:
             self.__longitude = None
         else:
             self.__longitude = longitude
-        self.__scientist_label = None
         self.__comment = comment
         self.__date = date
 
@@ -60,10 +68,6 @@ class Mosquito:
         return self.__user
 
     @property
-    def scientist_label(self):
-        return self.__scientist_label
-
-    @property
     def comment(self):
         return self.__comment
 
@@ -71,7 +75,4 @@ class Mosquito:
     def date(self):
         return self.__date
 
-    @scientist_label.setter
-    def scientist_label(self, scientist_label):
-        self.__scientist_label = scientist_label
 

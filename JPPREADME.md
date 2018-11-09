@@ -6,7 +6,7 @@ github repository:
 https://github.com/mosquito-boys/mosquito-monitoring
 
 Deployed app (old) : [mosquito-monitor.herokuapp.com](https://mosquito-monitor.herokuapp.com)   
-Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](https://mosquito.paulasquin.com) 
+Deployed app (our own server with persistent database, temporary url) : [mosquito.paulasquin.com](http://mosquito.paulasquin.com) 
 
 ## Project purpose
 This project aims to monitor and later anticipate mosquito related epidemics.

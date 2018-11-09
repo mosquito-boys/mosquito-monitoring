@@ -123,11 +123,9 @@ def postForm():
         print(generated_pic_path)
 
         # making preproc
-        coords = Preprocessing.mosquito_position(user_pic_path)
-        cropped_pic = Preprocessing.save_crop_img(coords, user_pic_path,
-                                                  generated_pic_path.replace(".jpg", "_crop.jpg"))
-        framed_pic = Preprocessing.save_framed_img(coords, user_pic_path,
-                                                   generated_pic_path.replace(".jpg", "_framed.jpg"))
+        preprocessing = Preprocessing(user_pic_path)
+        cropped_pic = preprocessing.save_crop_img(generated_pic_path.replace(".jpg", "_crop.jpg"))
+        framed_pic = preprocessing.save_framed_img(generated_pic_path.replace(".jpg", "_framed.jpg"))
         # making predictions
         predictions = command_classification.label_automatic(cropped_pic)
         print("predictions", predictions)

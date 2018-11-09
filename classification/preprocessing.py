@@ -15,14 +15,22 @@ class Preprocessing:
     __API_KEY = get_api_key()
     __API_url = "https://vision.googleapis.com/v1/images:annotate"
 
-    @staticmethod
-    def mosquito_position(image_path):
+    def __init__(self, image_path):
+        """
+        get mosquito coordinates from google api
+        :param image_path: the path of the input picture to preprocess
+        """
+        self.__image_path = image_path
+        # find coordinates
+        self.__coordinates = self.__mosquito_position()
+
+    def __mosquito_position(self):
         """
         retrieves coordinates of 4 points in the image framing the mosquito
         (image width pct for x,  image length pct for y)
-        :param image_path: path of the image to get the position
+        :return coordinates: of the found mosquito
         """
-        with open(image_path, 'rb') as image_file:
+        with open(self.__image_path, 'rb') as image_file:
             content = base64.encodebytes(image_file.read())
 
         querystring = {"key": Preprocessing.__API_KEY}
@@ -72,68 +80,53 @@ class Preprocessing:
         else:
             return coordinates
 
-    @staticmethod
-    def __compute_pt(coordinates, img):
+    def __compute_pt(self, img):
         """
         Compute pixel points
-        :param coordinates:
-        :param img:
+        :param img: the np array representing the picture
         :return pt1, pt2:
         """
-        pt1 = (int(coordinates[0]["x"] * len(img[0])), int(coordinates[0]["y"] * len(img)))
-        pt2 = (int(coordinates[2]["x"] * len(img[0])), int(coordinates[2]["y"] * len(img)))
+        pt1 = (int(self.__coordinates[0]["x"] * len(img[0])), int(self.__coordinates[0]["y"] * len(img)))
+        pt2 = (int(self.__coordinates[2]["x"] * len(img[0])), int(self.__coordinates[2]["y"] * len(img)))
         return pt1, pt2
 
-    @staticmethod
-    def mosquito_croping(coordinates, image_path):
+    def __mosquito_cropping(self):
         """
         crops the image around the mosquito and resizes the image into a square
-        :param coordinates: the coordinates of the mosquito
-        :param image_path: the path of the picture to transform
         """
-
-        img = cv2.imread(image_path)
-        pt1, pt2 = Preprocessing.__compute_pt(coordinates, img)
+        img = cv2.imread(self.__image_path)
+        pt1, pt2 = self.__compute_pt(img)
         crop_img = img[pt1[1]:pt2[1], pt1[0]:pt2[0]]
         dim = (150, 150)
         crop_img = cv2.resize(crop_img, dim, interpolation=cv2.INTER_AREA)
         return crop_img
 
-    @staticmethod
-    def mosquito_framing(coordinates, image_path):
+    def __mosquito_framing(self):
         """
         Put a black rectangle arround the mosquito in the intial picture
-        :param coordinates: the coordinates of the mosquito
-        :param image_path: the path of the picture to transform
         """
         # appends a black rectangle around the mosquito
-        img = cv2.imread(image_path)
-        pt1, pt2 = Preprocessing.__compute_pt(coordinates, img)
-        cv2.rectangle(img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
-        return img
+        framed_img = cv2.imread(self.__image_path)
+        pt1, pt2 = self.__compute_pt(framed_img)
+        cv2.rectangle(framed_img, pt1, pt2, (0, 0, 0), thickness=1, lineType=8, shift=0)
+        return framed_img
 
-    @staticmethod
-    def save_crop_img(coordinates, path_origin, saving_path):
+    def save_crop_img(self, saving_path):
         """
         find the insect in of the given path image,
         crop the image to the insect and save it in the given preprocessed path
-        :param coordinates: the coordinates of the mosquito
-        :param path_origin: the path of the picture to transform
         :param saving_path: where to same the new picture
         """
-        crop_img = Preprocessing.mosquito_croping(coordinates, path_origin)
+        crop_img = self.__mosquito_cropping()
         cv2.imwrite(saving_path, crop_img)
         return saving_path
 
-    @staticmethod
-    def save_framed_img(coordinates, path_origin, saving_path):
+    def save_framed_img(self, saving_path):
         """
         find the insect in of the given path image,
         crop the image to the insect and save it in the given preprocessed path
-        :param coordinates: the coordinates of the mosquito
-        :param path_origin: the path of the picture to transform
         :param saving_path: where to same the new picture
         """
-        crop_img = Preprocessing.mosquito_framing(coordinates, path_origin)
+        crop_img = self.__mosquito_framing()
         cv2.imwrite(saving_path, crop_img)
         return saving_path

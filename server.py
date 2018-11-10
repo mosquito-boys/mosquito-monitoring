@@ -139,7 +139,7 @@ def postForm():
         mosquito.label = predicted_label
 
         print("store_mosquito")
-        SQLiteEngine.store_mosquito(user, mosquito)
+        SQLiteEngine.store_mosquito(mosquito)
 
         return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic,
                                prediction=predictions, mosquito=mosquito)

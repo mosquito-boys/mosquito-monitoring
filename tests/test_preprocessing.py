@@ -1,6 +1,6 @@
 from classification.preprocessing import Preprocessing
 
-image_path = 'dataset/anopheles/pic_014.jpg'
+image_path = 'dataset/training/anopheles/pic_014.jpg'
 
 preprocessing = Preprocessing(image_path)
 

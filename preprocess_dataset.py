@@ -2,7 +2,7 @@
 
 import glob
 import os
-import classification.preprocessing as preprocessing
+from classification.preprocessing import Preprocessing
 from utilities import Errors
 
 
@@ -18,7 +18,7 @@ class InitProject():
 
     def create_preprocessed_dataset(
             self,
-            dataset_path="dataset",
+            dataset_path="dataset/training",
             preprocessed_dataset_path="preprocessed_dataset"
     ):
         print("Starting creation of the preprocessed dataset")
@@ -42,8 +42,8 @@ class InitProject():
                     # ask for computing the preprocessed image and to write it at the desired path
                     try:
                         print("+ Saving preprocessed " + path_preprocessed_image)
-                        coords = preprocessing.Preprocessing.mosquito_position(path_image)
-                        preprocessing.Preprocessing.save_crop_img(coords, path_image, path_preprocessed_image)
+                        preprocessing = Preprocessing(path_image)
+                        preprocessing.save_crop_img(path_preprocessed_image)
                     except Errors.InsectNotFound:
                         print("\tCan't crop the image")
                     except KeyError:

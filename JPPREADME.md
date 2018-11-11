@@ -25,21 +25,54 @@ You have then 2 choices:
 - The 1st one is to install all the requirements (see Installation below)
 - The second one is to have Docker (version 1.13.0+ and above) installed and running on your OS
 
-## Code explainations
+## Code explanations
 
 ### flask server
 
-server.py create the server and launch it with the routes
+server.py create the server and launch it with the routes.
+The /postform is the main route uploading the mosquito formular, running the prediction and returning the results.
+static folder contains ressources which are immediatly available from the client (localhost:5000/static/...)
+We put in the static/tmp folder the pictures of the mosquitos processed. the utilities/LRU.py script watch this folder and remove old pictures when size exceed 4.
+templates folder contains html templates using jinja syntax.
 
 ### db_model
 
-Classes which represent the objects used in the project and the corresponding model for the database
-The db is an SQLite database created automatically when the server is launched in a SQLite.db file
-Every successful upload leads to the creation of a user, a mosquito and store them in the db
+Classes which represent the objects used in the project and the corresponding model for the database.
+The db is an SQLite database created automatically when the server is launched in a SQLite.db file.
+Every successful upload leads to the creation of a user, a mosquito and store them in the db.
+
+At the first start of the server, the sqlite db is created and 3 mosquitos are stored in it to let you enjoy the map feature (check use the webapp part)
+
+### dataset
+
+#### training and testing
+
+dataset/training contains the initial training dataset
+dataset/test contains picture for you to test.
+
+Use the test dataset to test the webapp!
+
+#### dataset_to_be_validated
+
+Uploaded mosquito pictures from users. Some expert should check it and decide the right label for the picture to be added to the dataset
+
+#### preprocess dataset
+
+In order to be used efficiently, the dataset should be preprocessed (zoom on the mosquito in the picture)
+```
+python3 preprocess_dataset.py
+```
+This command preprocess all the pictures from the training dataset and put them in the preprocessed_dataset folder
 
 ### classification
 
 Scripts and classes for classification purpose (preprocessing, training, prediction)
+
+#### train the model
+Run this command to train the model with the preprocess dataset
+```
+python3 -m tests.test_command_classification --retrain
+```
 
 #### Label a mosquito
 Import the mosquito classification module
@@ -57,26 +90,7 @@ Return example
 [['aedes', '0.8780854'], ['culex', '0.11636846'], ['anopheles', '0.0055461014']]
 ```
 
-### dataset
 
-Initial dataset for training
-
-### dataset_to_be_validated
-
-Uploaded mosquito pictures from users. Some expert should check it and decide the right label for the picture to be added to the dataset
-
-### preprocessed_dataset
-
-Transformed pictures from the preprocessing action. Each preprocessed picture correspond to a picture in the dataset
-
-### tests
-
-Don't run directly the scripts independently.
-To test them, run the corresponding test script like below:
-
-```
-python3 -m tests.my_test
-```
 
 ### utilities
 
@@ -121,7 +135,9 @@ python3 server.py
 
 There is 3 tabs.
 
-The first one let you upload a mosquito.
+### Home tab
+
+This tab let you upload a mosquito.
 We suggest you choose from the dataset/test folder a mosquito picture.
 You can use your own location or enter a custum one. You can try the following locations :
 44.082189, 26.922443
@@ -132,9 +148,12 @@ You can use your own location or enter a custum one. You can try the following l
 17.212302, -94.212233
 8.488606, -74.993682
 
-The second one is just an information page
+### Info tab
+Is just an information page about the projects and the students
 
-The last one show a map with all mosquitos found so far. The db is initialized with 3 mosquitos, so you can use the map feature
+### Map tab
+Show a map with all mosquitos found so far. The db is initialized with 3 mosquitos, so you can use the map feature.
+The map feature use the sqlite db to get all mosquitos 
 
 # Project Slides
 ![Slide 1](docs/slide_1.png) 

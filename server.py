@@ -110,13 +110,13 @@ def postForm():
         longitude = form['longitude']
         date = check_fix_date(form['date'])
         mosquito = Mosquito(user, file.filename, latitude, longitude, form["comment"], date)
-        user_pic_path = "./dataset_to_be_validated/" + mosquito.filename
+        user_pic_path = "./dataset/to_be_validated/" + mosquito.filename
         safe_name = ''.join(c for c in mosquito.filename if c not in '(){}<>')
         generated_pic_path = "./static/tmp/" + safe_name
 
         # saving file
-        if not os.path.exists("./dataset_to_be_validated"):
-            os.makedirs("./dataset_to_be_validated")
+        if not os.path.exists("./dataset/to_be_validated"):
+            os.makedirs("./dataset/to_be_validated")
         file.save(user_pic_path)
         print(date)
         print(user_pic_path)

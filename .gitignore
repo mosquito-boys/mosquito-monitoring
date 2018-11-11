@@ -10,5 +10,5 @@ tmp/*
 # classification/tensorflow
 **/retrain_logs/
 static/tmp/*
-dataset_to_be_validated
+dataset/to_be_validated
 tests/*.jpg

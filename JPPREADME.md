@@ -122,7 +122,15 @@ python3 server.py
 There is 3 tabs.
 
 The first one let you upload a mosquito.
-We suggest you choose from the ... folder a mosquito picture and a location
+We suggest you choose from the dataset/test folder a mosquito picture.
+You can use your own location or enter a custum one. You can try the following locations :
+44.082189, 26.922443
+44.082189, 26.922443
+24.400253, 84.642478
+0.729654, 115.094303
+27.683107, 115.890004
+17.212302, -94.212233
+8.488606, -74.993682
 
 The second one is just an information page
 

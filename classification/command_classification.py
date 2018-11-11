@@ -12,8 +12,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
 IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset"])
 URL_MODULE = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
-# 'https://tfhub.dev/google/imagenet/pnasnet_large/classification/2'"
-#  https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1'"
+# "https://tfhub.dev/google/imagenet/pnasnet_large/classification/2"
+# "https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1"
 
 class Retrain(th.Thread):
     def __init__(self, tensor_folder):
@@ -47,7 +47,7 @@ class Retrain(th.Thread):
               " --how_many_training_steps 4000" + \
               " --summaries_dir retrain_logs/" + \
               " --train_maximum True" + \
-              " --tfhub_module https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+              " --tfhub_module " + URL_MODULE
         # " --validation_percentage 5" + \
         # " --testing_percentage 5"  # + \
 
@@ -180,8 +180,10 @@ class Predict:
         # Try to get the tfhub_module url from the cmd
         with open(cmd_path, 'r') as cmd_file:
             cmd_content = cmd_file.read().split(" ")
+            # Choosing default URL_MODULE
             url_module = URL_MODULE
             try:
+                # Try to find the url module as writter in the cmd.txt file
                 index_url_module = cmd_content.index("--tfhub_module") + 1
                 url_module = cmd_content[index_url_module]
             except ValueError:

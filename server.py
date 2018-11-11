@@ -124,8 +124,8 @@ def postForm():
 
         # making preproc
         preprocessing = Preprocessing(user_pic_path)
-        cropped_pic = preprocessing.save_crop_img(generated_pic_path.replace(".jpg", "_crop.jpg"))
-        framed_pic = preprocessing.save_framed_img(generated_pic_path.replace(".jpg", "_framed.jpg"))
+        cropped_pic = preprocessing.save_crop_img(generated_pic_path.replace(".jpg", "_crop.jpg").replace(".png", "_crop.png"))
+        framed_pic = preprocessing.save_framed_img(generated_pic_path.replace(".jpg", "_framed.jpg").replace(".png", "_framed.png"))
         # making predictions
         predictions = command_classification.label_automatic(cropped_pic)
         print("predictions", predictions)
@@ -141,6 +141,7 @@ def postForm():
         print("store_mosquito")
         SQLiteEngine.store_mosquito(mosquito)
 
+        print("cropped_pic", cropped_pic, "framed_pic", framed_pic)
         return render_template("pages/response.html", cropped_pic=cropped_pic, framed_pic=framed_pic,
                                prediction=predictions, mosquito=mosquito)
 

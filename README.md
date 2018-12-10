@@ -71,11 +71,18 @@ cd ~
 # Working in personal folder
 git clone https://github.com/mosquito-boys/mosquito-monitoring.git
 cd mosquito-monitoring
-# You should copy in this directory the .env file with your API keys, then run
+```
+You should copy in this directory the .env file with your API keys.  
+Also, in order to enable the systemctl service, you will have to edit the [docker-mosquito.service](docker-mosquito.service).
+```WorkingDirectory=/home/USERNAME/mosquito-monitoring``` by replacing ```USERNAME``` with your server username.  
+Note : we didn't indicate to use /var/www/ as the ```.env``` may be exposed.
+Then run:
+```bash
 sudo docker-compose -f docker-compose-ssl.yml build
 sudo cp docker-mosquito.service /etc/systemd/system
 sudo systemctl enable docker-mosquito
 sudo systemctl restart docker-mosquito
+```
 # This last command will run docker-compose -f docker-compose-ssl.yml up
 ``` 
 

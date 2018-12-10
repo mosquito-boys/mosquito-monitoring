@@ -65,7 +65,8 @@ docker-compose build
 
 If you want to start the project on your server startup, you can follow this procedure:
 ```bash
-sudo cd /var/www
+cd ~
+# Working in personal folder
 sudo git clone https://github.com/mosquito-boys/mosquito-monitoring.git
 sudo cd mosquito-monitoring
 # You should copy in this directory the .env file with your API keys, then run

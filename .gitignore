@@ -12,3 +12,4 @@ tmp/*
 static/tmp/*
 dataset/to_be_validated
 tests/*.jpg
+*.pyc

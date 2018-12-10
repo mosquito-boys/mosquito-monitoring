@@ -48,11 +48,13 @@ GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY
 
 
 ### With Docker
+Be sure to have docker and docker-compose installed. If you haven't them already, you can follow those tutorials for [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and [docker-compose](https://docs.docker.com/compose/install/).  
+Then run  
 ```bash
 git clone https://github.com/mosquito-boys/mosquito-monitoring.git
 cd mosquito-monitoring
 # You should copy in this directory the .env file with your API keys, then run
-docker-compose up
+sudo docker-compose up
 ```
 
 If you want to rebuild the project you can run 
